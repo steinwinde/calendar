@@ -1,0 +1,90 @@
+{
+    "days": [
+        {
+            "day": "2023-10-29T23:00:00.000Z",
+            "index": 0,
+            "isOutsideMonth": true,
+            "isPublicHoliday": false,
+            "isWeekend": false,
+            "classes": "isOutsideMonth",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        },
+        {
+            "day": "2023-10-30T23:00:00.000Z",
+            "index": 1,
+            "isOutsideMonth": true,
+            "isPublicHoliday": false,
+            "isWeekend": false,
+            "classes": "isOutsideMonth",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        },
+        {
+            "day": "2023-10-31T23:00:00.000Z",
+            "index": 2,
+            "isOutsideMonth": false,
+            "isPublicHoliday": true,
+            "isWeekend": false,
+            "classes": "isPublicHoliday",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": [
+                {
+                    "fromDateTime": "2023-11-01T08:00:00.000Z",
+                    "toDateTime": "2023-11-01T16:00:00.000Z",
+                    "title": "H+W Consult GmbH",
+                    "type": null
+                }
+            ]
+        },
+        {
+            "day": "2023-11-01T23:00:00.000Z",
+            "index": 3,
+            "isOutsideMonth": false,
+            "isPublicHoliday": false,
+            "isWeekend": false,
+            "classes": "isWorkingDay",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        },
+        {
+            "day": "2023-11-02T23:00:00.000Z",
+            "index": 4,
+            "isOutsideMonth": false,
+            "isPublicHoliday": false,
+            "isWeekend": false,
+            "classes": "isWorkingDay",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        },
+        {
+            "day": "2023-11-03T23:00:00.000Z",
+            "index": 5,
+            "isOutsideMonth": false,
+            "isPublicHoliday": false,
+            "isWeekend": true,
+            "classes": "isWeekend",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        },
+        {
+            "day": "2023-11-04T23:00:00.000Z",
+            "index": 6,
+            "isOutsideMonth": false,
+            "isPublicHoliday": false,
+            "isWeekend": true,
+            "classes": "isWeekend",
+            "quantity": 0,
+            "title": null,
+            "dateTimes": []
+        }
+    ],
+    "index": 0,
+    "number": 44
+}

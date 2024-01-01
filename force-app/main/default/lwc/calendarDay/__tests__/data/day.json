@@ -1,0 +1,21 @@
+{
+    "day": {
+        "day": "2023-10-31T23:00:00.000Z",
+        "index": 2,
+        "isOutsideMonth": false,
+        "isPublicHoliday": true,
+        "isWeekend": false,
+        "classes": "isPublicHoliday",
+        "quantity": 0,
+        "title": null,
+        "dateTimes": [
+            {
+                "fromDateTime": "2023-11-01T08:00:00.000Z",
+                "toDateTime": "2023-11-01T16:00:00.000Z",
+                "title": "H+W Consult GmbH",
+                "type": null
+            }
+        ]
+    },
+    "dateTimes": null
+}

@@ -1,0 +1,34 @@
+:host {
+    justify-content:start;
+    margin-top: 0.3rem;
+}
+/* :host(.isWorkingDay) {
+    background-color: white;
+} */
+:host(.isOutsidePeriod) {
+    background-color: #f3f3f3;
+}
+:host(.isHighlightedDay) {
+    background-color: mediumpurple;
+}
+:host(.isWeekend) {
+    background-color: beige;
+}
+.container {
+    height: 100%;
+    position: relative;
+}
+.show-lines {
+    background-image:
+      repeating-linear-gradient(#999 0 1px, transparent 1px 100%);
+    background-size: 16px 16px;
+    height: 96rem;
+    position: relative;
+}
+.background-day-counter {
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size: 0.6668rem;
+    padding-right: 0.5rem;
+}

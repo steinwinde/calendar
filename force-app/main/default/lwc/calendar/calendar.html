@@ -1,0 +1,101 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid card-header slds-p-bottom_large">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-event" title="event">
+                        <lightning-icon icon-name="standard:event" alternative-text="event"></lightning-icon>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-line-height_reset">{LABEL_CALENDAR}</p>
+                    <h1 class="slds-page-header__title">{title}</h1>
+                </div>
+                <div class="slds-no-flex">
+                    
+                    <slot name="actions" class="slds-m-right_x-large" style="display: inline-block; width: auto;"></slot>
+                    
+                    <lightning-button-group class="slds-m-right_x-small">
+                        <lightning-button-icon
+                            alternative-text={LABEL_ALTERNATIVE_TEXT_PREVIOUS}
+                            icon-name="utility:chevronleft"
+                            onclick={handleClickLeft}
+                            variant="border-filled"
+                        ></lightning-button-icon>
+                        <lightning-button-icon
+                            alternative-text={LABEL_ALTERNATIVE_TEXT_NEXT}
+                            icon-name="utility:chevronright"
+                            onclick={handleClickRight}
+                            variant="border-filled"
+                        ><label>{LABEL_ALTERNATIVE_TEXT_NEXT}</label></lightning-button-icon>
+                    </lightning-button-group>
+    
+                    <lightning-button 
+                        class="slds-m-right_large button-vertical-alignment"
+                        label={LABEL_TODAY}
+                        onclick={handleClickToday}
+                        variant="neutral"></lightning-button>
+    
+                    <lightning-button-icon
+                        alternative-text={LABEL_ALTERNATIVE_TEXT_REFRESH}
+                        class="slds-var-m-right_x-small"
+                        icon-name="utility:refresh"
+                        onclick={handleClickRefresh} 
+                        variant="border-filled"
+                    ><label>{LABEL_REFRESH}</label></lightning-button-icon>
+    
+                    <lightning-button-menu 
+                        alternative-text={LABEL_VIEW}
+                        class="slds-m-right_x-small"
+                        icon-name="utility:event"
+                        onselect={handleChangePeriod}
+                        value={periodSelected}
+                        variant="border-filled" 
+                    >
+                        <template for:each={periods} for:item="period">
+                            <lightning-menu-item
+                                checked={period.checked} 
+                                key={period.value} 
+                                value={period.value} 
+                                label={period.label}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+
+                    <lightning-button
+                        class="button-vertical-alignment"
+                        disabled={readOnly}
+                        label={LABEL_NEW_PART}
+                        onclick={handleClickNewPart}
+                        variant="neutral"></lightning-button>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div class={classWeekDayRow}>
+                <!-- upper left corner -->
+                <div>&nbsp;</div>
+                <!-- names of weekdays -->
+                <template if:true={weekdays} for:each={weekdays} for:item="weekday">
+                    <div key={weekday.index} class="top-row-element">
+                        {weekday.name}<template if:true={isWeek}>&nbsp;<!-- TODO: show day in month --></template>
+                    </div>
+                </template>
+            </div>
+            <div class={classCalendarRows} lwc:ref="scrollarea">
+                <template for:each={weeks} for:item="week">
+                    <c-calendar-week
+                        class={classScrolledArea}
+                        configuration={configuration}
+                        key={week.index}
+                        ondayclick={handleDayClick}
+                        ondrop={handleOnDrop}
+                        onpartclick={handlePartClick}
+                        onpartdoubleclick={handlePartDoubleClick}
+                        week={week}
+                    ></c-calendar-week>
+                </template>
+            </div>
+        </div>
+    </article>
+</template>

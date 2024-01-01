@@ -1,0 +1,20 @@
+<template>
+    <div class="background-day-counter" onclick={handleClick} ondrop={handleOnDrop} ondragover={handleOnDragOver}>
+        {number}
+    </div>
+
+    <div class={classContainer} onclick={handleClick} ondrop={handleOnDrop} ondragover={handleOnDragOver}>
+        <template for:each={parts} for:item="part">
+            <c-calendar-part 
+                configuration={configuration}
+                from-date-time={part.fromDateTime}
+                index={part.id} 
+                key={part.index} 
+                onpartclick={handlePartClick}
+                onpartdoubleclick={handlePartDoubleClick}
+                title={part.title} 
+                to-date-time={part.toDateTime}
+        ></c-calendar-part>
+        </template>
+    </div>
+</template>

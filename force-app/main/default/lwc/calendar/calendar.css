@@ -1,0 +1,42 @@
+.card-header {
+    background-color: #f3f3f3;
+}
+
+.week-day-row {
+    display: grid;
+    column-gap: 0.2rem;
+}
+.grid-columns-regular {
+    grid-template-columns: 1fr repeat(7, 2fr);
+}
+.grid-columns-hidden-column {
+    grid-template-columns: 1fr repeat(7, 2fr) min-content;
+}
+
+.calendar-rows-month {
+    display: contents;
+    height: 100%;
+}
+.calendar-rows-week {
+    height: 33.41rem;
+    overflow-y: scroll;
+}
+.scrollable {
+    overflow-y: scroll;
+}
+.calendar-rows-inside {
+    display: grid;
+    grid-template-columns: 1fr repeat(7, 2fr);
+    background-image:
+        repeating-linear-gradient(grey 0 1px, transparent 1px 100%);
+    background-size: 16px 16px;
+    height: 24rem;
+}
+
+.top-row-element {
+    text-align: center;
+    font-size: 1.2rem;
+}
+.button-vertical-alignment {
+    vertical-align: bottom;
+}
