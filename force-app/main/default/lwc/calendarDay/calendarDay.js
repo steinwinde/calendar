@@ -18,11 +18,13 @@ export default class CalendarDay extends LightningElement {
         const millis = '' + new Date().getTime();
         this.day.dateTimes.forEach((dt, index) => {
             ar.push({
-                index: millis + index,
-                id: dt.id,
-                title: dt.title, 
                 fromDateTime: dt.fromDateTime, 
-                toDateTime: dt.toDateTime
+                id: dt.id,
+                index: millis + index,
+                left: dt.left,
+                title: dt.title, 
+                toDateTime: dt.toDateTime,
+                width: dt.width
             });
         });
         return ar;

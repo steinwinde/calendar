@@ -11,7 +11,7 @@ export class CalendarPopulator {
     // outgoing
     weeks = [];
     
-    // private
+    // private (but used in tests)
     firstDayDisplayed;
     lastDayDisplayed;
     firstDayOfPeriod;

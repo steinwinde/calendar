@@ -16,6 +16,12 @@ export default class CalendarPart extends LightningElement {
     toDateTime = null;
 
     @api
+    left = 0;
+
+    @api
+    width = 0;
+
+    @api
     configuration;
 
     get draggable() {
@@ -32,14 +38,18 @@ export default class CalendarPart extends LightningElement {
         if(isMonth) return '';
 
         const height = getHeight(this.configuration, this.fromDateTime, this.toDateTime);
-        const heightStyle = 'height: ' + height + 'rem;';
+        const heightStyle = `height: ${height}rem;`;
 
         const factor = 4;
         const shiftSpace = 0;
         const position = (this.fromDateTime.getHours() + (this.fromDateTime.getMinutes() / 60) - shiftSpace) * factor;
-        const positionStyle = 'margin-top: ' + position + 'rem;';
+        const positionStyle = `margin-top: ${position}rem;`;
 
-        const result = heightStyle + positionStyle;
+        // Adjust "width" and "left" depending on overlapping parts
+        const horizontalPositionStyle = `left: ${this.left}%;`;
+        const widthStyle = `width: ${this.width}%;`;
+
+        const result = heightStyle + positionStyle + horizontalPositionStyle + widthStyle;
         return result;
     }
 
@@ -54,6 +64,7 @@ export default class CalendarPart extends LightningElement {
         if (this.configuration.readOnly) return;
         if (event.detail === 1) {
             clearTimeout(this.timer);
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
             this.timer = setTimeout(() => {
                 const e = new CustomEvent('partclick', {
                     detail: {

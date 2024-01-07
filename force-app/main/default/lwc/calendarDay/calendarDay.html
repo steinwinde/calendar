@@ -9,12 +9,14 @@
                 configuration={configuration}
                 from-date-time={part.fromDateTime}
                 index={part.id} 
-                key={part.index} 
+                key={part.index}
+                left={part.left} 
                 onpartclick={handlePartClick}
                 onpartdoubleclick={handlePartDoubleClick}
                 title={part.title} 
                 to-date-time={part.toDateTime}
-        ></c-calendar-part>
+                width={part.width}
+            ></c-calendar-part>
         </template>
     </div>
 </template>

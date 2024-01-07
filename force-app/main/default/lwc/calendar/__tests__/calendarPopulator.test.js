@@ -1,6 +1,6 @@
 import { CalendarPopulator } from "../calendarPopulator";
 
-// npm run test:unit calendarDateFunctions
+// npm run test:unit calendarPopulator
 describe("c-calendar-date-functions", () => {
     it("populateFirstLast monthly", () => {
 

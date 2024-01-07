@@ -1,6 +1,7 @@
 import { LightningElement, api, track } from "lwc";
 import { getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber } from "./calendarDateFunctions";
 import {CalendarPopulator} from "./calendarPopulator";
+import { CalendarOverlapCalculator } from "./calendarOverlapCalculator";
 
 export default class Calendar extends LightningElement {
 
@@ -29,8 +30,19 @@ export default class Calendar extends LightningElement {
     }
     set calendarData(value) {
         if (value) {
-            [this.durations, this.date, this.highlightedDays] 
-                = [value.durations, value.date, value.highlightedDays];
+            
+            [this.date, this.highlightedDays] = [value.date, value.highlightedDays];
+            
+            // We need the durations to be sorted by start and end date, e.g. for the overlap calculation
+            this.durations = value.durations.map(d => ({...d})).sort((d1, d2) => {
+                if (d1.fromDateTime.getTime() < d2.fromDateTime.getTime()) return -1;
+                if (d1.fromDateTime.getTime() > d2.fromDateTime.getTime()) return 1;
+                if (d1.toDateTime.getTime() < d2.toDateTime.getTime()) return -1;
+                if (d1.toDateTime.getTime() > d2.toDateTime.getTime()) return 1;
+                return 0;
+            });
+            new CalendarOverlapCalculator(this.durations).arrange();
+
             // We currently don't support changing the configuration on the fly
             if(!this.configuration && value.configuration) {
                 this.configuration = {...value.configuration};
