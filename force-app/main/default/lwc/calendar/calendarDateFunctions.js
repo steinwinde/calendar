@@ -1,3 +1,5 @@
+import firstDayOfWeek from '@salesforce/i18n/firstDayOfWeek';
+
 const getWeek = (someDate) => {
     let d = new Date(someDate.getTime());
     const week = [];
@@ -26,52 +28,22 @@ const getLastDayOfMonth = (someDate) => {
     return lastDate;
 }
 
-// we regard Monday as the first day of the week
+// getDay() returns the delta to the first day of the week (the time calculated according to different locales),
+// but always with Sunday representing 0
+// returns 0 for Sunday, 1 for Monday, etc. - 6 for Saturday (e.g. Saudi Arabia) - according to local time!
+// firstDayOfWeek returns what is the first day of the week according to user settings,
+// 1 for Sunday, 2 for Monday, etc. - 7 for Saturday (e.g. Saudi Arabia)
 const getFirstDayOfWeek = (someDate) => {
-    let monthInYear = someDate.getMonth() < 9 ? '0' + (someDate.getMonth() + 1) : someDate.getMonth() + 1;
-    let dayInMonth = someDate.getDate() < 10 ? '0' + someDate.getDate() : someDate.getDate();
-    let utcDateString = someDate.getFullYear() + '-' + monthInYear + '-' + dayInMonth + 'T00:00:00.000Z';
-    // get the utc date
-    let utcDate = new Date(utcDateString);
-
-    // calculate the week start
-    const day = utcDate.getDay();
-    const diff = utcDate.getDate() - day + (day == 0 ? -6 : 1);
-    utcDate = new Date(utcDate.setDate(diff));
-
-    // use the original date and modify it with the utc date
-    let result = new Date(someDate);
-    result.setDate(utcDate.getDate());
-    result.setMonth(utcDate.getMonth());
-    result.setFullYear(utcDate.getFullYear());
-
+    let delta = someDate.getDay() - (firstDayOfWeek-1);
+    if(delta < 0) delta += 7;
+    const result = new Date(someDate.getTime());
+    result.setDate(result.getDate() - delta);
     return result;
 }
 
-// we regard Sunday as the last day of the week
 const getLastDayOfWeek = (someDate) => {
-    
-    let monthInYear = someDate.getMonth() < 9 ? '0' + (someDate.getMonth() + 1) : someDate.getMonth() + 1;
-    let dayInMonth = someDate.getDate() < 10 ? '0' + someDate.getDate() : someDate.getDate();
-    let utcDateString = someDate.getFullYear() + '-' + monthInYear + '-' + dayInMonth + 'T00:00:00.000Z';
-    // get the utc date
-    let utcDate = new Date(utcDateString);
-
-    // calculate the week start
-    const day = utcDate.getDay();
-    const diff = utcDate.getDate() - day + (day == 0 ? -6 : 1);
-    utcDate = new Date(utcDate.setDate(diff));
-
-    // TODO: 
-    // calculate the week end
-    utcDate = new Date(utcDate.setDate(utcDate.getDate() + 6));
-
-    // use the original date and modify it with the utc date
-    let result = new Date(someDate);
-    result.setDate(utcDate.getDate());
-    result.setMonth(utcDate.getMonth());
-    result.setFullYear(utcDate.getFullYear());
-
+    let result = getFirstDayOfWeek(someDate);
+    result.setDate(result.getDate() + 6);
     return result;
 }
 

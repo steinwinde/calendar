@@ -1,5 +1,6 @@
 import { CalendarOverlapCalculator } from "../calendarOverlapCalculator";
 
+// npm run test:unit calendarOverlapCalculator
 describe("c-calendar-overlap-calculator", () => {
 
     function getTime(hour, minute) {

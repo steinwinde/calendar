@@ -1,4 +1,11 @@
-import { getWeek, getFirstDayOfMonth, getLastDayOfWeek } from "../calendarDateFunctions";
+import { getWeek, getFirstDayOfMonth, getFirstDayOfWeek, getLastDayOfWeek } from "../calendarDateFunctions";
+
+// TODO: consider default 6
+// jest.mock(
+//     '@salesforce/i18n/firstDayOfWeek',
+//     () => ({default: 1}),
+//     { virtual: true }
+// );
 
 // npm run test:unit calendarDateFunctions
 describe("c-calendar-date-functions", () => {
@@ -20,6 +27,22 @@ describe("c-calendar-date-functions", () => {
         // Wednesday, 1st of January 2020
         const result = getFirstDayOfMonth(new Date('2020-01-31T00:00:00.000+01:00'));
         const expected = new Date('2020-01-01T00:00:00.000+01:00');
+        expect(result).toStrictEqual(expected);
+    });
+
+    it("getFirstDayOfWeek when Wednesday", () => {
+        // this is a Wednesday
+        const result = getFirstDayOfWeek(new Date('2024-01-10T00:00:00.000+01:00'));
+        // this is a Monday
+        const expected = new Date('2024-01-08T00:00:00.000+01:00');
+        expect(result).toStrictEqual(expected);
+    });
+
+    it("getFirstDayOfWeek when Monday", () => {
+        // this is a Monday
+        const result = getFirstDayOfWeek(new Date('2024-01-08T00:00:00.000+01:00'));
+        // this is a Monday
+        const expected = new Date('2024-01-08T00:00:00.000+01:00');
         expect(result).toStrictEqual(expected);
     });
 

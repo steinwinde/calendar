@@ -29,6 +29,7 @@ export default class Calendar extends LightningElement {
         return null;
     }
     set calendarData(value) {
+
         if (value) {
             
             [this.date, this.highlightedDays] = [value.date, value.highlightedDays];

@@ -1,7 +1,7 @@
 import { CalendarPopulator } from "../calendarPopulator";
 
 // npm run test:unit calendarPopulator
-describe("c-calendar-date-functions", () => {
+describe("c-calendar-populator", () => {
     it("populateFirstLast monthly", () => {
 
         const periodOption = 'month';
