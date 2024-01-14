@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { getHeight } from './calendarPartUtils';
+import { getHeight, getTimeStamp } from './calendarPartUtils';
 
 export default class CalendarPart extends LightningElement {
 
@@ -23,6 +23,12 @@ export default class CalendarPart extends LightningElement {
 
     @api
     configuration;
+
+    get fromTo() {
+        const fromTime = getTimeStamp(this.fromDateTime)
+        const toTime = getTimeStamp(this.toDateTime);
+        return fromTime + ' - ' + toTime;
+    }
 
     get draggable() {
         return !this.configuration.readOnly;

@@ -21,4 +21,9 @@ const getHeight = (configuration, fromDateTime, toDateTime) => {
     return workload;
 }
 
-export { getHeight };
+const getTimeStamp = (someDateTime) => {
+    return (someDateTime.getHours()>9?someDateTime.getHours():'0'+someDateTime.getHours()) 
+            + ':' + (someDateTime.getMinutes()>9?someDateTime.getMinutes():'0'+someDateTime.getMinutes());
+}
+
+export { getHeight, getTimeStamp };
