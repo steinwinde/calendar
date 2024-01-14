@@ -1,0 +1,13 @@
+<template>
+    <c-calendar 
+        calendar-data={calendarData} 
+        lwc:if={displayCalendar}
+        ondatechange={handleDateChange}
+        ondayclick={handleDayClick}
+        ondrop={handleDrop}
+        onnewpart={handleNewPart}
+        onpartclick={handlePartClick}
+        onpartdoubleclick={handlePartDoubleClick}
+        onperiodchange={handlePeriodChange}
+    ></c-calendar>
+</template>

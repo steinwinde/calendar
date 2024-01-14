@@ -1,0 +1,10 @@
+<template>
+    <lightning-modal-header label="Change Date"></lightning-modal-header>
+    <lightning-modal-body>
+        Move this event to...
+        <lightning-input type="date" label="Date" value={d} onchange={handleChangeDate}></lightning-input>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="OK" onclick={handleOkay}></lightning-button>
+    </lightning-modal-footer>
+</template>

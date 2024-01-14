@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage,lightning__HomePage">
+            <property name="isReadOnly" type="Boolean" label="Read Only?" description="Are items in the calendar locked?"
+                required="false" default="false" />
+            <property name="period" type="String" label="&quot;month&quot; or &quot;week&quot;?" required="false"
+                datasource="month,week" default="month" description="What is the initial display: month or week?" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

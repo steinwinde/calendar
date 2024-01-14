@@ -1,0 +1,16 @@
+[
+    {
+        "IsAllDayEvent": false,
+        "StartDateTime": "2023-12-02T15:00:00.000Z",
+        "EndDateTime": "2023-12-02T16:00:00.000Z",
+        "Subject": "Meeting",
+        "Id": "00UAP000000ll3V2AQ"
+    },
+    {
+        "IsAllDayEvent": false,
+        "StartDateTime": "2023-12-14T09:00:00.000Z",
+        "EndDateTime": "2023-12-14T14:00:00.000Z",
+        "Subject": "Other",
+        "Id": "00UAP000000ll572AA"
+    }
+]
