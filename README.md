@@ -17,5 +17,6 @@ Known issues:
 
 - Titles of events, if exceeding the length of the event, appear outside of the event
 - Inconsistent language output (sometimes the language of texts depends on the current user (week day names), sometimes on constants
+- Wrapper does not load public holidays for earlier or later years
 
 Any sort of input welcome.

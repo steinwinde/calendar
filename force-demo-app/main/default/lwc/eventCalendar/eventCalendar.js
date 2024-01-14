@@ -1,11 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
-import { getEvents } from './eventCalendarMockData';
+import { getEvents, getPublicHolidays } from './eventCalendarMockData';
 import EventCalendarChangeDateModal from 'c/eventCalendarChangeDateModal';
 import LightningConfirm from 'lightning/confirm';
 import { createPart, movePartToDate, deletePart } from './eventCalendarUtils';
-// import getEvents from '@salesforce/apex/EventCalendarController.getEvents';
 
-import getPublicHolidays from "@salesforce/apex/EventCalendarController.getPublicHolidays";
+// import getEvents from '@salesforce/apex/EventCalendarController.getEvents';
+// import getPublicHolidays from "@salesforce/apex/EventCalendarController.getPublicHolidays";
 
 export default class EventCalendar extends LightningElement {
 
