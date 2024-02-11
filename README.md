@@ -32,3 +32,7 @@ Known issues:
 - Solution for the case where not all events fit into a day: Currently they are cut or don't appear at all, if they don't fit in the day.
 
 Comments welcome.
+
+
+https://github.com/steinwinde/calendar/assets/19989954/eeb99e6a-a848-4e3b-ac45-4df475b52fab
+
