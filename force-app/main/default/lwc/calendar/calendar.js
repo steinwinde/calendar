@@ -1,23 +1,31 @@
 import { LightningElement, api, track } from "lwc";
-import { getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber } from "./calendarDateFunctions";
+import { getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber, sameDay } from "./calendarDateFunctions";
 import {CalendarPopulator} from "./calendarPopulator";
 import { CalendarOverlapCalculator } from "./calendarOverlapCalculator";
+import { getDateTime } from "./calendarModifier";
 
 export default class Calendar extends LightningElement {
 
-    LABEL_ALTERNATIVE_TEXT_PREVIOUS = 'précédent';
-    LABEL_ALTERNATIVE_TEXT_NEXT = 'suivant';
+    LABEL_ALTERNATIVE_TEXT_PREVIOUS = 'previous';
+    LABEL_ALTERNATIVE_TEXT_NEXT = 'next';
     LABEL_CALENDAR = 'Calendar';
-    LABEL_MONTH = 'Mois';
-    LABEL_WEEK = 'Semaine';
-    LABEL_TODAY = 'Aujourd\'hui';
-    LABEL_ALTERNATIVE_TEXT_REFRESH = 'Mettre à jour';
-    LABEL_VIEW = 'Vue';
-    LABEL_NEW_PART = 'Nouveau';
+    LABEL_MONTH = 'Month';
+    LABEL_WEEK = 'Week';
+    LABEL_TODAY = 'Today';
+    LABEL_ALTERNATIVE_TEXT_REFRESH = 'Update';
+    LABEL_VIEW = 'View';
 
+    // default configuration overwritten from parent LWC
     configuration = {
-        period: null,
-        readOnly: null
+        period: 'month',
+        readOnly: false,
+        leftColumnMonth: false,
+        leftColumnWeek: false,
+        stackedWeek: false,
+        partHeightFixedMonth: false,
+        partHeightFixedWeek: false,
+        heightFixedMonth: false,
+        heightFixedWeek: false
     };
     durations = [];
     date = new Date();
@@ -46,16 +54,7 @@ export default class Calendar extends LightningElement {
         });
         new CalendarOverlapCalculator(this.durations).arrange();
 
-        if(value.configuration) {
-            // readOnly is a configuration that can be changed during lifetime of the component
-            if(value.configuration.readOnly !== undefined) {
-                this.configuration.readOnly = value.configuration.readOnly;
-            }
-            // period represents default and once set managed by the calendar itself
-            if(value.configuration.period !== undefined && !this.configuration.period) {
-                this.configuration.period = value.configuration.period;
-            }
-        }
+        this.populateConfiguration(value.configuration);
 
         this.populate();
     }
@@ -66,26 +65,48 @@ export default class Calendar extends LightningElement {
     weekdays = []; // 7 weekdays like LU, MA, ...
     title = '';
 
-    @track
-    periods = [
-        { checked: true, label: this.LABEL_MONTH, value: 'month' },
-        { checked: false, label: this.LABEL_WEEK, value: 'week' }
-    ];
+    get periods() {
+        return [
+            { checked: this.configuration.period==='month', label: this.LABEL_MONTH, value: 'month' },
+            { checked: this.configuration.period==='week', label: this.LABEL_WEEK, value: 'week' }
+        ];
+    }
+
+    get isMonth() {
+        return this.configuration?.period === 'month';
+    }
 
     get isWeek() {
         return this.configuration?.period === 'week';
     }
 
+    get leftColumn() {
+        const result = ((this.configuration.leftColumnMonth && this.isMonth) || (this.configuration.leftColumnWeek && this.isWeek));
+        return result;
+    }
+
     get classWeekDayRow() {
-        return this.isWeek ? 'week-day-row grid-columns-hidden-column' : 'week-day-row grid-columns-regular';
+        const hasLeftColumn = (this.isMonth && this.configuration.leftColumnMonth)
+            || (this.isWeek && this.configuration?.leftColumnWeek);
+        const custom = hasLeftColumn ? 'week-day-row-with-left-column' : 'week-day-row-no-left-column';
+        return 'week-day-row ' + custom;
     }
 
     get classCalendarRows() {
-        return this.isWeek ? 'calendar-rows-week' : 'calendar-rows-month';
+        if(this.isMonth) return 'calendar-rows-month';
+        if(this.configuration?.stackedWeek) {
+            if(this.configuration?.heightFixedWeek) {
+                return 'calendar-rows-week-stacked-fixed-height';
+            }
+            return 'calendar-rows-week-stacked';
+        }
+        return  'calendar-rows-week-not-stacked';
     }
 
     get classScrolledArea() {
-        return this.isWeek ? 'scrolled-area-week' : 'scrolled-area-month';
+        const result = ((this.isMonth && this.configuration?.leftColumnMonth) || (this.isWeek && this.configuration?.leftColumnWeek)) 
+            ? 'days-and-left-column' : 'days-only';
+        return result;
     }
 
     connectedCallback() {
@@ -93,7 +114,7 @@ export default class Calendar extends LightningElement {
     }
 
     renderedCallback() {
-        if(this.isWeek) {
+        if(this.isWeek && !this.configuration?.stackedWeek) {
             // TODO: Do we need to hedge against repeated execution of this section? How can we, still guaranteeing
             // we scroll as much as needed? (Compare old against new period?!)
             const scrollable = this.refs.scrollarea;
@@ -139,13 +160,9 @@ export default class Calendar extends LightningElement {
     handleChangePeriod(event) {
         if(this.configuration.period === event.detail.value) return;
         this.configuration.period = event.detail.value;
-        this.periods = this.periods.map((p) => {p.checked = p.value === this.configuration.period; return p;});
+        // this.periods = this.periods.map((p) => {p.checked = p.value === this.configuration.period; return p;});
         this.dispatchPeriodChange();
         this.populate();
-    }
-
-    handleClickNewPart(event) {
-        this.dispatchNewPart();
     }
 
     // ------------------------------------------------------------------------
@@ -159,11 +176,6 @@ export default class Calendar extends LightningElement {
 
     dispatchPeriodChange() {
         const e = new CustomEvent('periodchange', {detail: this.configuration.period});
-        this.dispatchEvent(e);
-    }
-    
-    dispatchNewPart() {
-        const e = new CustomEvent('newpart');
         this.dispatchEvent(e);
     }
 
@@ -183,18 +195,74 @@ export default class Calendar extends LightningElement {
     }
 
     handlePartDoubleClick(event) {
-        const e = new CustomEvent('partdoubleclick', {detail: event.detail});
+        const ids = this.getIdsBasedOnSelection(event.detail.id);
+        const newDetail = {ids: ids};
+        const e = new CustomEvent('partdoubleclick', {detail: newDetail});
         this.dispatchEvent(e);
     }
 
+    handlePartShiftClick(event) {
+        // We don't pass this event on, because it doesn't change data. 
+        // The selection is to be removed from all parts that are on different days.
+        // The selection enables multi-drag drop.
+        this.removeSelectionFromPartsOfDifferentDays(event.detail.id);
+    }
+
     handleOnDrop(event) {
-        const e = new CustomEvent('drop', {detail: event.detail});
+        const ids = this.getIdsBasedOnSelection(event.detail.id);
+        const newDetail = {ids: ids, day: event.detail.day};
+        const e = new CustomEvent('drop', {detail: newDetail});
         this.dispatchEvent(e);
     }
 
     // ------------------------------------------------------------------------
     // general functions
     // ------------------------------------------------------------------------
+
+    populateConfiguration(configuration) {
+        if(configuration) {
+            this.configuration = {...Object.assign(this.configuration, configuration)};
+        }
+    }
+
+    getIdsBasedOnSelection(id) {
+        // The id is the id of the duration that was the triggered. If the duration
+        // is selected and others are selected as well, then all selected durations
+        // are regarded to be triggered.
+        const ids = [id];
+        const selectedDateTime = getDateTime(id, this.weeks);
+        // TODO: Make this more efficient
+        if(selectedDateTime.selected) {
+            this.weeks.forEach(week => {
+                week.days.filter(day => (day.dateTimes.length > 0 && sameDay(day.dateTimes[0].fromDateTime, selectedDateTime.fromDateTime))).forEach(day => {
+                    day.dateTimes.forEach(dateTime => {
+                        if(dateTime.selected) {
+                            ids.push(dateTime.id);
+                        }
+                    });
+                });
+            });
+        }
+        return ids;
+    }
+
+    removeSelectionFromPartsOfDifferentDays(id) {
+        const clickedDateTime = getDateTime(id, this.weeks);
+        clickedDateTime.selected = !clickedDateTime.selected;
+        if(!clickedDateTime.selected) {
+            // User removed selection, other days stay as (unselected as) they are
+            return;
+        }
+
+        const fromDateTime = clickedDateTime.fromDateTime;
+        this.weeks.forEach(week => {
+            week.days.filter(day => (day.dateTimes.length > 0 && !sameDay(day.dateTimes[0].fromDateTime, fromDateTime))).forEach(day => {
+                day.dateTimes.forEach(dateTime => {
+                    dateTime.selected = false;
+                });
+            });
+        });
+    }
 
     populate() {
         if (!this.date) return;

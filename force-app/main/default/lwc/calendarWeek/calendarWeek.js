@@ -17,16 +17,20 @@ export default class CalendarWeek extends LightningElement {
         return this.week.days;
     }
 
-    get classPeriod() {
-        return 'first-column-' + this.configuration.period;
+    // get classPeriod() {
+    //     return 'first-column-' + this.configuration.period;
+    // }
+
+    get isMonth() {
+        return this.configuration.period === 'month';
     }
 
     get isWeek() {
         return this.configuration.period === 'week';
     }
 
-    get isMonth() {
-        return this.configuration.period === 'month';
+    get leftColumn() {
+        return ((this.configuration.leftColumnMonth && this.isMonth) || (this.configuration.leftColumnWeek && this.isWeek));
     }
 
     get hours() {
@@ -54,6 +58,11 @@ export default class CalendarWeek extends LightningElement {
 
     handlePartDoubleClick(event) {
         const e = new CustomEvent('partdoubleclick', {detail: event.detail});
+        this.dispatchEvent(e);
+    }
+
+    handlePartShiftClick(event) {
+        const e = new CustomEvent('partshiftclick', {detail: event.detail});
         this.dispatchEvent(e);
     }
 

@@ -2,7 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { getEvents, getPublicHolidays } from './eventCalendarMockData';
 import EventCalendarChangeDateModal from 'c/eventCalendarChangeDateModal';
 import LightningConfirm from 'lightning/confirm';
-import { createPart, movePartToDate, deletePart } from './eventCalendarUtils';
+import { createPart, movePartsToDate, deletePart } from './eventCalendarUtils';
 
 // import getEvents from '@salesforce/apex/EventCalendarController.getEvents';
 // import getPublicHolidays from "@salesforce/apex/EventCalendarController.getPublicHolidays";
@@ -11,21 +11,34 @@ export default class EventCalendar extends LightningElement {
 
     LABEL_DO_YOU_WANT_TO_DELETE_HEADER = 'Delete part';
     LABEL_DO_YOU_WANT_TO_DELETE = 'Do you really want to delete the part?';
+    LABEL_NEW_PART = 'Nouveau';
 
-    START_HOUR = 9;
-
-    @api period;
+    // configuration
+    @api 
+    period = 'month';
     // do not use "readOnly" as a property
-    @api isReadOnly;
+    @api 
+    isReadOnly = false;
+    @api
+    leftColumnMonth = false;
+    @api 
+    leftColumnWeek = false;
+    @api
+    stackedWeek = false;
+    @api
+    partHeightFixedMonth = false;
+    @api
+    partHeightFixedWeek = false;
+    @api
+    heightFixedMonth = false;
+    @api
+    heightFixedWeek = false;
+    @api
+    startHour = 9;
 
     publicHolidays;
 
-    get configuration() {
-        return {
-            period: this.period,
-            readOnly: this.isReadOnly
-        };
-    }
+    configuration = null;
 
     currentDate = new Date();
     @track
@@ -36,8 +49,20 @@ export default class EventCalendar extends LightningElement {
     }
 
     async connectedCallback() {
-        const result = await getPublicHolidays({ d: this.currentDate });
-        this.publicHolidays = result.map((d) => new Date(d));
+        
+        this.configuration = {
+            period: this.period,
+            readOnly: this.isReadOnly,
+            leftColumnMonth: this.leftColumnMonth,
+            leftColumnWeek: this.leftColumnWeek,
+            stackedWeek: this.stackedWeek,
+            partHeightFixedMonth: this.partHeightFixedMonth,
+            partHeightFixedWeek: this.partHeightFixedWeek,
+            heightFixedMonth: this.heightFixedMonth,
+            heightFixedWeek: this.heightFixedWeek
+        };
+    
+        this.populatePublicHolidays();
         this.refreshCalendar();
     }
 
@@ -51,8 +76,9 @@ export default class EventCalendar extends LightningElement {
                     fromDateTime: fromDateTime,
                     toDateTime: toDateTime,
                     id: e.Id,
+                    // selected: false,
                     title: e.Subject,
-                    type: 'event'
+                    type: 'one'
                 };
             });
 
@@ -74,20 +100,33 @@ export default class EventCalendar extends LightningElement {
         }
     }
 
+    async populatePublicHolidays() {
+        const year = this.currentDate.getFullYear();
+        const result = await getPublicHolidays({ year: year });
+        this.publicHolidays = result.map((d) => new Date(d));
+    }
+
     // ------------------------------------------------------------------------
     // User changes something in the calendar, i.e. event comes from child component
     // ------------------------------------------------------------------------
 
-    // Event coming from calendarWeek, calendar becomes based on months instead of weeks or vice versa
+    // Event coming from calendar, calendar becomes based on months instead of weeks or vice versa
     async handlePeriodChange(event) {
         console.log('period changed: ', event.detail);
     }
 
-    // Event coming from calendarWeek, the month or the week changes
+    // Event coming from calendar, the month or the week changes
     handleDateChange(event) {
         this.currentDate = event.detail;
-        this.calendarData.date = this.currentDate;
-        this.calendarData = {...this.calendarData};
+        this.populatePublicHolidays();
+        
+        // this.calendarData.date = event.detail;
+        // this.calendarData.highlightedDays = [...this.publicHolidays];
+        // delete this.calendarData.configuration;
+        // this.calendarData = {...this.calendarData};
+
+        this.calendarData = Object.assign({...this.calendarData}, 
+            {configuration: undefined, date: event.detail, highlightedDays: [...this.publicHolidays]});
     }
 
     async handleNewPart(event) {
@@ -100,19 +139,22 @@ export default class EventCalendar extends LightningElement {
         });
         if(result) {
             const day= new Date(result);
-            this.calendarData = createPart(day, this.calendarData, this.START_HOUR);
+            // delete this.calendarData.configuration;
+            this.calendarData = createPart(day, this.calendarData, this.startHour);
         }
     }
 
     async handleDayClick(event) {
-        this.calendarData = createPart(event.detail, this.calendarData, this.START_HOUR);
+        // delete this.calendarData.configuration;
+        this.calendarData = createPart(event.detail, this.calendarData, this.startHour);
     }
 
-    // Event coming from calendarWeek, a "Part" is dragged to a day
+    // Event coming from calendarWeek, one or several "parts" are dragged to a day
     handleDrop(event) {
-        const id = event.detail.id;
+        const ids = event.detail.ids;
         const day = event.detail.day;
-        this.calendarData = movePartToDate(id, day, this.calendarData, this.START_HOUR);
+        // delete this.calendarData.configuration;
+        this.calendarData = movePartsToDate(ids, day, this.calendarData, this.startHour);
     }
 
     // Event coming from calendarWeek, a "Part" is clicked; we could open a modal here to edit the "Part"
@@ -127,7 +169,8 @@ export default class EventCalendar extends LightningElement {
         });
         if(result) {
             const day= new Date(result);
-            this.calendarData = movePartToDate(event.detail.id, day, this.calendarData, this.START_HOUR);
+            // delete this.calendarData.configuration;
+            this.calendarData = movePartsToDate(event.detail.id, day, this.calendarData, this.startHour);
         }
     }
 
@@ -138,7 +181,8 @@ export default class EventCalendar extends LightningElement {
             label: this.LABEL_DO_YOU_WANT_TO_DELETE_HEADER,
         });
         if(result === true) {
-            this.calendarData = deletePart(event.detail.id, this.calendarData);
+            // delete this.calendarData.configuration;
+            this.calendarData = deletePart(event.detail, this.calendarData);
         }
     }
 }

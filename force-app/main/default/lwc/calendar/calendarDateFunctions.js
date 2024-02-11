@@ -28,11 +28,6 @@ const getLastDayOfMonth = (someDate) => {
     return lastDate;
 }
 
-// getDay() returns the delta to the first day of the week (the time calculated according to different locales),
-// but always with Sunday representing 0
-// returns 0 for Sunday, 1 for Monday, etc. - 6 for Saturday (e.g. Saudi Arabia) - according to local time!
-// firstDayOfWeek returns what is the first day of the week according to user settings,
-// 1 for Sunday, 2 for Monday, etc. - 7 for Saturday (e.g. Saudi Arabia)
 const getFirstDayOfWeek = (someDate) => {
     let delta = someDate.getDay() - (firstDayOfWeek-1);
     if(delta < 0) delta += 7;
@@ -60,13 +55,6 @@ const getWeekNumber = (someDate) => {
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
 }
-
-// const setFirstDayOfWeek = (someDate) => {
-//     const distanceToSunday = someDate.getDay();
-//     const distanceToMonday =
-//         distanceToSunday === 0 ? 6 : distanceToSunday - 1;
-//     someDate.setDate(someDate.getDate() - distanceToMonday);
-// }
 
 const sameDay = (d1, d2) => {
     return (

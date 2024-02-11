@@ -1,6 +1,6 @@
 <template>
     <article class="slds-card">
-        <div class="slds-card__header slds-grid card-header slds-p-bottom_large">
+        <div class="slds-card__header card-header slds-p-bottom_large">
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
                 <div class="slds-media__figure">
                     <span class="slds-icon_container slds-icon-standard-event" title="event">
@@ -49,7 +49,6 @@
                         class="slds-m-right_x-small"
                         icon-name="utility:event"
                         onselect={handleChangePeriod}
-                        value={periodSelected}
                         variant="border-filled" 
                     >
                         <template for:each={periods} for:item="period">
@@ -62,19 +61,15 @@
                         </template>
                     </lightning-button-menu>
 
-                    <lightning-button
-                        class="button-vertical-alignment"
-                        disabled={readOnly}
-                        label={LABEL_NEW_PART}
-                        onclick={handleClickNewPart}
-                        variant="neutral"></lightning-button>
+                    <slot name="buttons"></slot>
+                    
                 </div>
             </header>
         </div>
         <div class="slds-card__body slds-card__body_inner">
             <div class={classWeekDayRow}>
                 <!-- upper left corner -->
-                <div>&nbsp;</div>
+                <div lwc:if={leftColumn}>&nbsp;</div>
                 <!-- names of weekdays -->
                 <template if:true={weekdays} for:each={weekdays} for:item="weekday">
                     <div key={weekday.index} class="top-row-element">
@@ -92,6 +87,7 @@
                         ondrop={handleOnDrop}
                         onpartclick={handlePartClick}
                         onpartdoubleclick={handlePartDoubleClick}
+                        onpartshiftclick={handlePartShiftClick}
                         week={week}
                     ></c-calendar-week>
                 </template>

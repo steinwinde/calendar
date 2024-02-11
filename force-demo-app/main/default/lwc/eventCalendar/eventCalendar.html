@@ -5,9 +5,18 @@
         ondatechange={handleDateChange}
         ondayclick={handleDayClick}
         ondrop={handleDrop}
-        onnewpart={handleNewPart}
         onpartclick={handlePartClick}
         onpartdoubleclick={handlePartDoubleClick}
-        onperiodchange={handlePeriodChange}
-    ></c-calendar>
+        onperiodchange={handlePeriodChange}>
+
+        <lightning-button
+            class="button-vertical-alignment"
+            disabled={isReadOnly}
+            label={LABEL_NEW_PART}
+            onclick={handleNewPart}
+            slot="buttons"
+            variant="neutral">
+        </lightning-button>
+        
+    </c-calendar>
 </template>

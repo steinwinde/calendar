@@ -3,7 +3,7 @@
         {number}
     </div>
 
-    <div class={classContainer} onclick={handleClick} ondrop={handleOnDrop} ondragover={handleOnDragOver}>
+    <div class={classContainer} onclick={handleClick} ondragover={handleOnDragOver} ondrop={handleOnDrop} style={styleContainer}>
         <template for:each={parts} for:item="part">
             <c-calendar-part 
                 configuration={configuration}
@@ -13,8 +13,12 @@
                 left={part.left} 
                 onpartclick={handlePartClick}
                 onpartdoubleclick={handlePartDoubleClick}
+                onpartshiftclick={handlePartShiftClick}
+                selected={part.selected}
                 title={part.title} 
+                title2={part.title2} 
                 to-date-time={part.toDateTime}
+                type={part.type}
                 width={part.width}
             ></c-calendar-part>
         </template>

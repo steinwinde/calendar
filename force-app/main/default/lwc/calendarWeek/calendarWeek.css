@@ -1,41 +1,24 @@
-/* :host {
-    display: contents;
-} */
-:host(.scrolled-area-week) {
+:host {
     display: grid;
-    grid-template-columns: 1fr repeat(7, 2fr);
-    background-image:
-        repeating-linear-gradient(white 0 1px, transparent 1px 100%);
-    background-size: 16px 16px;
-    height: 24rem;
 }
-:host(.scrolled-area-month) {
-    display: grid;
+:host(.days-only) {
+    grid-template-columns: repeat(7, 2fr);
+}
+:host(.days-and-left-column) {
     grid-template-columns: 1fr repeat(7, 2fr);
 }
 div {
     text-align: center;
 }
-div.first-column-week {
+/* represents a non-repeated height */
+/* div.first-column-week {
     height: 50rem;
-}
-div.first-column-month {
-    /* was 10rem */
+} */
+/* represents a repeated height, the height of the week */
+/* div.first-column-month {
     height: 9.6rem;
-}
-/* copied from calendarDay.css */
-/* .show-lines {
-    background-image:
-      repeating-linear-gradient(#999 0 1px, transparent 1px 100%);
-    background-size: 16px 16px;
-    height: 100%;
-    position: relative;
 } */
 .timer {
     margin-bottom: 3rem;
     font-size: 0.6668rem;
-}
-.scrollable {
-    /* overflow-y: scroll; */
-    /* height: 100%; */
 }

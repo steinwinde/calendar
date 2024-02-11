@@ -2,11 +2,13 @@
 
     <!-- first column: either week number or minute-hour scale -->
     <!-- the margin top is the margin between weekday names and the days (white space) -->
-    <div style="margin-top: 0.3rem;">
-        <div lwc:if={isMonth} class={classPeriod}>
+    <div lwc:if={leftColumn} style="margin-top: 0.3rem;">
+        <!-- removed  class={classPeriod} -->
+        <div lwc:if={isMonth}>
             <span style="font-size: 1.2rem;">{weekNumber}</span>
         </div>
-        <div lwc:if={isWeek} class={classPeriod}>
+        <!-- removed  class={classPeriod} -->
+        <div lwc:if={isWeek}>
             <div style="height: 0.4rem;"></div>
             <div>
                 <template for:each={hours} for:item="hour">
@@ -29,6 +31,7 @@
             ondrop={handleOnDrop}
             onpartclick={handlePartClick}
             onpartdoubleclick={handlePartDoubleClick}
+            onpartshiftclick={handlePartShiftClick}
         >
         </c-calendar-day>
     </template>

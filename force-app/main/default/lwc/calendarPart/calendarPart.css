@@ -5,13 +5,28 @@ div {
     display: block;
     opacity: 1;
     color: black;
-    background-color: #CFEBFE;
     border: 1px solid grey;
     border-radius: 5px;
     width: 90%;
 }
 
-div.stacked {
+div.one {
+    background-color: #CFEBFE;
+}
+
+div.two {
+    background-color: goldenrod;
+}
+
+div.three {
+    background-color: greenyellow;
+}
+
+div.four {
+    background-color: pink;
+}
+
+div.stackedWeek {
     position: relative;
 }
 
@@ -21,7 +36,19 @@ div.positioned {
     right: 0;
 }
 
-p.title {
-    margin-left: 0.2rem;
-    margin-right: 0.2rem;
+div.selected {
+    border: 2px solid black;
+}
+
+.title {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    font-size: 0.75rem;
+}
+.fixedHeight {
+    height: 1.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 6.5rem;
 }

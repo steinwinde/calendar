@@ -8,10 +8,49 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage,lightning__HomePage">
-            <property name="isReadOnly" type="Boolean" label="Read Only?" description="Are items in the calendar locked?"
-                required="false" default="false" />
-            <property name="period" type="String" label="&quot;month&quot; or &quot;week&quot;?" required="false"
-                datasource="month,week" default="month" description="What is the initial display: month or week?" />
+            <property default="false" name="isReadOnly" type="Boolean" label="Read Only?" 
+                description="Are all items in the calendar locked and read only?"
+                required="false"
+            />
+            <property name="period" type="String" label="&quot;month&quot; or &quot;week&quot;?"
+                datasource="month,week" default="month" 
+                description="What is the initial display: month or week?"
+                required="false"
+            />
+            <property default="false" name="leftColumnMonth" type="Boolean" label="Display left column in month view?" 
+                description="Display the week numbers on the left of the month view?" 
+                required="false"
+            />
+            <property default="false" name="leftColumnWeek" type="Boolean" label="Display left column of a week with a scale?" 
+                description="Display the times on the left of the week view along with scale lines?" 
+                required="false"
+            />
+            <property default="false" name="stackedWeek" type="Boolean" label="Stacking for order and size of week items?" 
+                description="Use a simplified positioning for week items as in a stack?"
+                required="false"
+            />
+            <property default="false" name="partHeightFixedMonth" type="Boolean" label="Fixed height of monthly items?" 
+                description="Is the height of the items in a monthly view (which is always stacked) fixed or does it 
+                            depend on the text?"
+                required="false"
+            />
+            <property default="false" name="partHeightFixedWeek" type="Boolean" label="Fixed height of weekly items?" 
+                description="Is the height of the items in a weekly, stacked view fixed or does it depend on the text?"
+                required="false"
+            />
+            <property default="false" name="heightFixedMonth" type="Boolean" label="Fixed height of monthly calendar?" 
+                description="Is the height of the calendar in a monthly view fixed?"
+                required="false"
+            />
+            <property default="false" name="heightFixedWeek" type="Boolean" label="Fixed height of weekly calendar?" 
+                description="Is the height of the calendar in a weekly view fixed?"
+                required="false"
+            />
+
+            <property default="9" name="startHour" type="Integer" label="Default start time of an item"
+                description="When does a new or moved event start per default (0-23)?"
+                required="false"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

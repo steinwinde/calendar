@@ -18,7 +18,7 @@ describe('c-calendar-part', () => {
         document.body.appendChild(element);
 
         const div = element.shadowRoot.querySelector('div');
-        expect(div.className).toBe('stacked');
+        expect(div.className).toBe('stackedWeek');
     });
 
     it('calendarPart: behaviour when week', () => {

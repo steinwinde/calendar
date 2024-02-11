@@ -17,30 +17,37 @@ const createPart = (day, calendarData, startHour) => {
     const millisecs = 60 * 60 * 1000;
     const duration = {
         fromDateTime: new Date(endTime),
+        selected: false,
+        title: 'New Event',
         toDateTime: new Date(endTime + millisecs),
+        type: 'one',
         id: '' + (maxId + 1)
     };
     calendarData.durations.push(duration);
     return {...calendarData};
 }
 
-const movePartToDate = (id, day, calendarData, startHour) => {
+const movePartsToDate = (ids, day, calendarData, startHour) => {
     const dayDurations = calendarData.durations.filter((duration) => sameDay(duration.fromDateTime, day));
     let endTime = Math.max(...dayDurations.map(dayDuration => dayDuration.toDateTime.getTime()));
     if(endTime === -Infinity) {
         // no durations on this day yet
         endTime = day.setHours(startHour, 0, 0, 0);
     }
-    const durationToChange = calendarData.durations.find((duration) => duration.id === id);
-    const millisecs = durationToChange.toDateTime.getTime() - durationToChange.fromDateTime.getTime();
-    durationToChange.fromDateTime = new Date(endTime);
-    durationToChange.toDateTime = new Date(endTime + millisecs);
+    const durationsToChange = calendarData.durations.filter((duration) => ids.includes(duration.id));
+    durationsToChange.forEach((durationToChange) => {
+        const millisecs = durationToChange.toDateTime.getTime() - durationToChange.fromDateTime.getTime();
+        durationToChange.fromDateTime = new Date(endTime);
+        endTime = endTime + millisecs;
+        durationToChange.toDateTime = new Date(endTime);
+    });
     return {...calendarData};
 }
 
-const deletePart = (id, calendarData) => {
-    calendarData.durations = calendarData.durations.filter((duration) => duration.id !== id);
+const deletePart = (obj, calendarData) => {
+    const ids = obj.ids;
+    calendarData.durations = calendarData.durations.filter(duration => !ids.includes(duration.id));
     return {...calendarData};
 }
 
-export { createPart, movePartToDate, deletePart };
+export { createPart, movePartsToDate, deletePart };

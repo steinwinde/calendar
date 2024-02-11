@@ -72,7 +72,7 @@ export class CalendarPopulator {
                     day.isWeekend = true;
                     const isOutsidePeriod = this.isOutsidePeriod(day.day);
                     if(!isOutsidePeriod) {
-                        day.classes = "isWeekend";
+                        day.classes = 'isWeekend';
                     }
                 }
             });
@@ -89,7 +89,7 @@ export class CalendarPopulator {
                 ) {
                     day.isHighlightedDay = true;
                     if(!day.isOutsidePeriod) {
-                        day.classes = "isHighlightedDay";
+                        day.classes = 'isHighlightedDay';
                     }
                 }
             });
@@ -140,9 +140,10 @@ export class CalendarPopulator {
             isOutsidePeriod: isOutsidePeriod,
             isHighlightedDay: false,
             isWeekend: false,
-            classes: isOutsidePeriod ? "isOutsidePeriod" : "isWorkingDay",
+            classes: isOutsidePeriod ? 'isOutsidePeriod' : 'isWorkingDay',
             quantity: 0,
-            title: null
+            title: null,
+            title2: null
         };
     }
 
