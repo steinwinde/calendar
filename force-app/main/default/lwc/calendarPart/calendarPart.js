@@ -48,7 +48,7 @@ export default class CalendarPart extends LightningElement {
             || (this.configuration?.period === 'week' && this.configuration?.partHeightFixedWeek === true);
     }
 
-    get classDiv() {
+    get classDivMain() {
         const isMonth = this.configuration.period === 'month';
 
         const arrangementClass = !isMonth && !this.configuration.stackedWeek ? 'positioned' : 'stackedWeek';
@@ -60,7 +60,7 @@ export default class CalendarPart extends LightningElement {
 
         let heightClass = this.hasFixedHeight ? 'fixedHeight' :'';
 
-        return 'title ' + arrangementClass + ' ' + markSelectedClass + ' ' + typeClass + ' ' + heightClass;
+        return 'title main ' + arrangementClass + ' ' + markSelectedClass + ' ' + typeClass + ' ' + heightClass;
     }
 
     get styleDiv() {
@@ -87,14 +87,14 @@ export default class CalendarPart extends LightningElement {
         return result;
     }
 
-    get styleDivP() {
+    // get styleDivP() {
         // if(this.configuration?.period === 'month' && this.configuration?.partHeightFixedMonth === true) {
         //     return 'height: 3rem; text-overflow: ellipsis;';
         // } else if(this.configuration?.period === 'week' && this.configuration?.partHeightFixedWeek === true) {
         //     return 'height: 3rem; text-overflow: ellipsis;';
         // }
-        return '';
-    }
+        // return '';
+    // }
 
     // ------------------------------------------------------------------------
     // events of this component

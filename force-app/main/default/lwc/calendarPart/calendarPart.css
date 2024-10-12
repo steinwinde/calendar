@@ -1,11 +1,11 @@
 :host {
     display: contents
 }
-div {
+div.main {
     display: block;
     opacity: 1;
     color: black;
-    border: 1px solid grey;
+    border: 1px solid white;
     border-radius: 5px;
     width: 90%;
 }
