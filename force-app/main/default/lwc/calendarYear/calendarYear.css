@@ -1,0 +1,27 @@
+ul.months-block {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    border-spacing: 2.5rem 0.5rem;
+}
+
+ul.months-block > li {
+    display:table-cell;
+}
+
+ul.months-block > li:hover {
+    background-color: gainsboro;
+}
+
+ul.week {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    border-spacing: 0rem;
+}
+
+ul.week > li {
+    display: table-cell;
+    text-align: left;
+    padding-top: 1rem;
+}

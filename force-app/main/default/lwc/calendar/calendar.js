@@ -3,12 +3,14 @@ import { getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber, sameDay } from "./c
 import {CalendarPopulator} from "./calendarPopulator";
 import { CalendarOverlapCalculator } from "./calendarOverlapCalculator";
 import { getDateTime } from "./calendarModifier";
+import locale from "@salesforce/i18n/locale";
 
 export default class Calendar extends LightningElement {
 
     LABEL_ALTERNATIVE_TEXT_PREVIOUS = 'previous';
     LABEL_ALTERNATIVE_TEXT_NEXT = 'next';
     LABEL_CALENDAR = 'Calendar';
+    LABEL_YEAR = 'Year';
     LABEL_MONTH = 'Month';
     LABEL_WEEK = 'Week';
     LABEL_TODAY = 'Today';
@@ -67,9 +69,14 @@ export default class Calendar extends LightningElement {
 
     get periods() {
         return [
-            { checked: this.configuration.period==='month', label: this.LABEL_MONTH, value: 'month' },
-            { checked: this.configuration.period==='week', label: this.LABEL_WEEK, value: 'week' }
+            { checked: this.configuration?.period==='year', label: this.LABEL_YEAR, value: 'year' },
+            { checked: this.configuration?.period==='month', label: this.LABEL_MONTH, value: 'month' },
+            { checked: this.configuration?.period==='week', label: this.LABEL_WEEK, value: 'week' }
         ];
+    }
+
+    get isYear() {
+        return this.configuration?.period === 'year';
     }
 
     get isMonth() {
@@ -134,9 +141,11 @@ export default class Calendar extends LightningElement {
     handleClickLeft(event) {
         if(this.isWeek) {
             this.date.setDate(this.date.getDate() - 7);
-        } else {
+        } else if(this.isMonth) {
             const d = this.date.setMonth(this.date.getMonth() - 1);
             this.date = new Date(d);
+        } else if(this.isYear) {
+            this.date.setFullYear(this.date.getFullYear() - 1);
         }
         this.dispatchDateChange(this.date);
     }
@@ -144,9 +153,11 @@ export default class Calendar extends LightningElement {
     handleClickRight(event) {
         if(this.isWeek) {
             this.date.setDate(this.date.getDate() + 7);
-        } else {
+        } else if(this.isMonth) {
             const d = this.date.setMonth(this.date.getMonth() + 1);
             this.date = new Date(d);
+        } else if(this.isYear) {
+            this.date.setFullYear(this.date.getFullYear() + 1);
         }
         this.dispatchDateChange(this.date);
     }
@@ -308,7 +319,7 @@ export default class Calendar extends LightningElement {
         const ar = [];
         for (let i = 0; i < 7; i++) {
             const name = monday
-                .toLocaleDateString(undefined, options)
+                .toLocaleDateString(locale, options)
                 .toUpperCase();
             ar.push({ name: name, index: i });
             monday.setDate(monday.getDate() + 1);
@@ -321,10 +332,14 @@ export default class Calendar extends LightningElement {
             const month = this.date.toLocaleString('default', { month: 'long' });
             const year = this.date.getFullYear();
             this.title = month + ' ' + year;
-        } else {
+        } else if(this.configuration.period === 'week') {
             const firstDayOfWeek = getFirstDayOfWeek(this.date).toLocaleDateString();
             const lastDayOfWeek = getLastDayOfWeek(this.date).toLocaleDateString();
             this.title = firstDayOfWeek + '-' + lastDayOfWeek + ' (' + this.LABEL_WEEK + ' ' + getWeekNumber(this.date) + ')';
+        } else if(this.configuration.period === 'year') {
+            this.title = this.date.getFullYear();
+        } else {
+            // unsupported
         }
     }
 }

@@ -1,0 +1,35 @@
+.highlighted-0 {
+    padding: 0.2rem;
+    background: yellow;
+    color: white;
+}
+.highlighted-1 {
+    padding: 0.2rem;
+    background: lime;
+    color: white;
+}
+.highlighted-2 {
+    padding: 0.2rem;
+    background: aqua;
+    color: white;
+}
+.highlighted-3 {
+    padding: 0.2rem;
+    background: linear-gradient(lime, yellow);
+    color: white;
+}
+.highlighted-4 {
+    padding: 0.2rem;
+    background: linear-gradient(aqua, yellow);
+    color: white;
+}
+.highlighted-5 {
+    padding: 0.2rem;
+    background: linear-gradient(lime, aqua);
+    color: white;
+}
+.highlighted-6 {
+    padding: 0.2rem;
+    background: linear-gradient(yellow, lime, aqua);
+    color: white;
+}

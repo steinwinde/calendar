@@ -82,7 +82,8 @@ export default class EventCalendar extends LightningElement {
                     id: e.Id,
                     // selected: false,
                     title: title,
-                    type: 'one'
+                    // give it some varity: meetings appear different
+                    type: title.toUpperCase().indexOf('MEET') === -1 ? 'one' : 'two'
                 };
             });
 

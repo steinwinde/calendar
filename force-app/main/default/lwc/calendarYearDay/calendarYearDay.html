@@ -1,0 +1,8 @@
+<template>
+    <template lwc:if={day.highlight}>
+        <a href="javascript:void();" class={classA} onclick={handleClick} data-value={day.id}>{day.label}</a>
+    </template>
+    <template lwc:else>
+        <span>{day.label}</span>
+    </template>
+</template>

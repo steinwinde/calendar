@@ -17,7 +17,6 @@ This LWC provides many of the features of [Salesforce's calendar](https://help.s
 - Explicit support of being inserted in the sidebar
 - Event types that behave (e.g. read-only vs. read-write) differently from each other
 - Day view
-- Year view
 - Wrapper that allows the selection of an SObject as input like Salesforce's calendar
 - Visual indicator for today's date
 - [Tooltips](https://www.lightningdesignsystem.com/components/tooltips/)
