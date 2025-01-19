@@ -2,7 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { getEvents, getPublicHolidays } from './eventCalendarMockData';
 import EventCalendarChangeDateModal from 'c/eventCalendarChangeDateModal';
 import LightningConfirm from 'lightning/confirm';
-import { createPart, movePartsToDate, deletePart } from './eventCalendarUtils';
+import { createPart, movePartsToDate, deletePart, getSchedulerButtonLabel } from './eventCalendarUtils';
 
 // import getEvents from '@salesforce/apex/EventCalendarController.getEvents';
 // import getPublicHolidays from "@salesforce/apex/EventCalendarController.getPublicHolidays";
@@ -35,6 +35,8 @@ export default class EventCalendar extends LightningElement {
     heightFixedWeek = false;
     @api
     startHour = 9;
+    @api
+    scheduler = false;
 
     publicHolidays;
 
@@ -59,7 +61,8 @@ export default class EventCalendar extends LightningElement {
             partHeightFixedMonth: this.partHeightFixedMonth,
             partHeightFixedWeek: this.partHeightFixedWeek,
             heightFixedMonth: this.heightFixedMonth,
-            heightFixedWeek: this.heightFixedWeek
+            heightFixedWeek: this.heightFixedWeek,
+            scheduler: this.scheduler
         };
     
         this.populatePublicHolidays();
@@ -69,15 +72,16 @@ export default class EventCalendar extends LightningElement {
     async refreshCalendar() {
         try {
             const events = await getEvents();
-            let durations = events.map((e) => {
+            const durations = events.map((e) => {
                 const fromDateTime = new Date(e.StartDateTime);
                 const toDateTime = new Date(e.EndDateTime);
+                const title = this.configuration.scheduler ? getSchedulerButtonLabel(fromDateTime, toDateTime) : e.Subject;
                 return {
                     fromDateTime: fromDateTime,
                     toDateTime: toDateTime,
                     id: e.Id,
                     // selected: false,
-                    title: e.Subject,
+                    title: title,
                     type: 'one'
                 };
             });

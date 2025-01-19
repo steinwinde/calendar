@@ -1,5 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { getHeight, getTimeStamp } from './calendarPartUtils';
+import calendarPart from './calendarPart.html';
+import calendarPartScheduler from './calendarPartScheduler.html';
 
 export default class CalendarPart extends LightningElement {
 
@@ -95,6 +97,14 @@ export default class CalendarPart extends LightningElement {
         // }
         // return '';
     // }
+
+    // ------------------------------------------------------------------------
+    // lifecycle hooks
+    // ------------------------------------------------------------------------
+
+    render() {
+        return this.configuration?.scheduler ? calendarPartScheduler : calendarPart;
+    }
 
     // ------------------------------------------------------------------------
     // events of this component

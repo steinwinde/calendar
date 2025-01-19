@@ -51,6 +51,11 @@
                 description="When does a new or moved event start per default (0-23)?"
                 required="false"
             />
+
+            <property default="false" name="scheduler" type="Boolean" label="Render as Scheduler?"
+                description="Render the calendar in the style of a Salesforce Scheduler calendar, i.e. with buttons?"
+                required="false"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

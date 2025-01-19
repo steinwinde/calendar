@@ -1,3 +1,5 @@
+import locale from '@salesforce/i18n/locale';
+
 const sameDay = (d1, d2) => {
     return (
         d1.getFullYear() === d2.getFullYear() &&
@@ -50,4 +52,9 @@ const deletePart = (obj, calendarData) => {
     return {...calendarData};
 }
 
-export { createPart, movePartsToDate, deletePart };
+const getSchedulerButtonLabel = (fromDateTime, toDateTime) => {
+    return fromDateTime.toLocaleTimeString(locale, {timeStyle: 'short'}) 
+        + ' - ' + toDateTime.toLocaleTimeString(locale, {timeStyle: 'short'});
+}
+
+export { createPart, movePartsToDate, deletePart, getSchedulerButtonLabel };
