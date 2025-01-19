@@ -37,7 +37,7 @@ export default class Calendar extends LightningElement {
 
     @api
     get calendarData() {
-        return null;
+        return this.durations;
     }
     // We require the parent LWC to only include the calendar when the data is ready
     set calendarData(value) {
@@ -109,18 +109,21 @@ export default class Calendar extends LightningElement {
         return result;
     }
 
+    // ------------------------------------------------------------------------
+    // lifecycle hooks
+    // ------------------------------------------------------------------------
+
     connectedCallback() {
         this.populateWeekDays();
     }
 
     renderedCallback() {
-        if(this.isWeek && !this.configuration?.stackedWeek) {
-            // TODO: Do we need to hedge against repeated execution of this section? How can we, still guaranteeing
-            // we scroll as much as needed? (Compare old against new period?!)
-            const scrollable = this.refs.scrollarea;
-            const height = scrollable.offsetHeight;
-            // TODO: Make scroll to specific time
-            scrollable.scrollTop = height;
+        if(this.isWeek) {
+            if(!this.configuration?.stackedWeek) {
+                this.adjustScrollTop();
+            } else {
+                this.refs.scrollarea.scrollTop = 0;
+            }
         }
     }
 
@@ -218,6 +221,29 @@ export default class Calendar extends LightningElement {
     // ------------------------------------------------------------------------
     // general functions
     // ------------------------------------------------------------------------
+
+    adjustScrollTop() {
+        const firstDayOfWeek = getFirstDayOfWeek(this.date);
+        const lastDayOfWeek = getLastDayOfWeek(this.date);
+        // In case there are no events, we scroll to the START_HOUR
+        const START_HOUR = 8;
+        // In case the latest events are after 20:00, we scroll to 20:00
+        const END_HOUR = 20;
+        let earliestHour = this.calendarData
+            .filter(d => d.fromDateTime >= firstDayOfWeek && d.toDateTime <= lastDayOfWeek);
+        earliestHour = earliestHour.length === 0 ? START_HOUR : earliestHour
+            .reduce((acc, curr) => {
+                return acc.toLocaleTimeString('sv') < curr.fromDateTime.toLocaleTimeString('sv') ? acc : curr.fromDateTime;},
+                new Date('2024-09-01T' + END_HOUR + ':00:00'))
+            .getHours();
+        if(earliestHour > 20) earliestHour = 20;
+        // We use pixels as unit inside, which is good, because it's the same as the required unit for scrollTop.
+        // The calendar starts at 19px, each hour requiring 64px. The upper end of the calendar day is always one hour before 
+        // the first event of the earliest event of the week.
+        const scrollable = this.refs.scrollarea;
+        const height = 19 + ((earliestHour - 1) * 64);
+        scrollable.scrollTop = height;
+    }
 
     populateConfiguration(configuration) {
         if(configuration) {

@@ -57,12 +57,14 @@ export default class CalendarPart extends LightningElement {
 
         const markSelectedClass = this.selected ? 'selected' : '';
 
+        const main = this.configuration.scheduler ? 'slds-m-top_small' : 'main';
+
         // type is "one", "two"...
         const typeClass = this.type;
 
         let heightClass = this.hasFixedHeight ? 'fixedHeight' :'';
 
-        return 'title main ' + arrangementClass + ' ' + markSelectedClass + ' ' + typeClass + ' ' + heightClass;
+        return `title ${main} ${arrangementClass} ${markSelectedClass} ${typeClass} ${heightClass}`;
     }
 
     get styleDiv() {

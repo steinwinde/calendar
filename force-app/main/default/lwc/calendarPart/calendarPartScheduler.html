@@ -1,10 +1,14 @@
 <template>
-    <div class="slds-m-top_small">
+    <div 
+        class={classDivMain}
+        onclick={handleClick} 
+        style={styleDiv}
+        >
         <lightning-button 
+            class="slds-m-top_small"
             label={title} 
-            title={title} 
             onclick={handleClick} 
-            class="slds-m-left_x-small"
+            title={title} 
         >
         </lightning-button>
     </div>

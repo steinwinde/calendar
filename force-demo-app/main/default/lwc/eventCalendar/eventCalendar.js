@@ -149,7 +149,6 @@ export default class EventCalendar extends LightningElement {
     }
 
     async handleDayClick(event) {
-        // delete this.calendarData.configuration;
         this.calendarData = createPart(event.detail, this.calendarData, this.startHour);
     }
 
@@ -157,7 +156,6 @@ export default class EventCalendar extends LightningElement {
     handleDrop(event) {
         const ids = event.detail.ids;
         const day = event.detail.day;
-        // delete this.calendarData.configuration;
         this.calendarData = movePartsToDate(ids, day, this.calendarData, this.startHour);
     }
 
@@ -173,7 +171,6 @@ export default class EventCalendar extends LightningElement {
         });
         if(result) {
             const day= new Date(result);
-            // delete this.calendarData.configuration;
             this.calendarData = movePartsToDate(event.detail.id, day, this.calendarData, this.startHour);
         }
     }
@@ -185,7 +182,6 @@ export default class EventCalendar extends LightningElement {
             label: this.LABEL_DO_YOU_WANT_TO_DELETE_HEADER,
         });
         if(result === true) {
-            // delete this.calendarData.configuration;
             this.calendarData = deletePart(event.detail, this.calendarData);
         }
     }
