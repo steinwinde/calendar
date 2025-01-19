@@ -39,10 +39,13 @@ supported configurations, it's worth reading the eventCalendar.js-meta.xml .)
 ## Examples
 
 Without modifications, the example _force-demo-app_ shows this screen.
+![calendar-before-modifications](https://github.com/user-attachments/assets/f680a131-3f25-47d5-b1de-e0da3c6f8528)
 
 The respective year view looks like this.
+![calendar-before-modifications-year-view](https://github.com/user-attachments/assets/e2b9bce2-117c-443e-99ff-aa9706c71e37)
 
 After ticking the box "Render as Scheduler" and "Stacking for order and size of week items" in the Lightning App builder, the week view looks like this.
+![calendar-with-scheduler-configuration](https://github.com/user-attachments/assets/0c804ff6-2680-45e8-9cfd-51e69dbe5672)
 
 
 
