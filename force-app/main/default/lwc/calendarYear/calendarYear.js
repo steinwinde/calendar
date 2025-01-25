@@ -76,4 +76,9 @@ export default class CalendarYear extends LightningElement {
         const e = new CustomEvent('dayclick', {detail: event.detail});
         this.dispatchEvent(e);
     }
+
+    handlePartClick(event) {
+        const e = new CustomEvent('partclick', {detail: event.detail});
+        this.dispatchEvent(e);
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="background-day-counter" onclick={handleClick} ondrop={handleOnDrop} ondragover={handleOnDragOver}>
+    <div lwc:if={showNumber} class={classDayCounter} data-id={dataId} onclick={handleClick} ondrop={handleOnDrop} ondragover={handleOnDragOver}>
         {number}
     </div>
 
@@ -7,6 +7,7 @@
         <template for:each={parts} for:item="part">
             <c-calendar-part 
                 configuration={configuration}
+                font-type={part.fontType}
                 from-date-time={part.fromDateTime}
                 index={part.id} 
                 key={part.index}
@@ -15,6 +16,7 @@
                 onpartdoubleclick={handlePartDoubleClick}
                 onpartshiftclick={handlePartShiftClick}
                 selected={part.selected}
+                show-icon={part.showIcon}
                 title={part.title} 
                 title2={part.title2} 
                 to-date-time={part.toDateTime}

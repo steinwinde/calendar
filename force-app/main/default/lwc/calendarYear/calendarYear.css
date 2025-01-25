@@ -1,8 +1,11 @@
+ul.year > li {
+    padding-top: 3rem;
+}
+
 ul.months-block {
     width: 100%;
     display: table;
     table-layout: fixed;
-    border-spacing: 2.5rem 0.5rem;
 }
 
 ul.months-block > li {
@@ -14,6 +17,7 @@ ul.months-block > li:hover {
 }
 
 ul.week {
+    /* TODO: The one in use uses a fixed width of 250px */
     width: 100%;
     display: table;
     table-layout: fixed;

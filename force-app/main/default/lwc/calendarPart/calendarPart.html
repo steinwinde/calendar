@@ -1,14 +1,21 @@
 <template>
     <div 
         class={classDivMain}
+        data-name="surroundingDiv"
+        data-id={dataId}
         draggable={draggable}
         onclick={handleClick} 
         ondblclick={handleDoubleClick} 
         ondragstart={handleDragStart} 
         style={styleDiv}
     >
-        <!-- <p class="title" style={styleDivP}> -->
-            {title} <em>{title2}</em>
-        <!-- </p> -->
+        <p class="title" style={styleP}>
+            <lightning-formatted-rich-text value={title}></lightning-formatted-rich-text>
+            <template lwc:if={showIcon}>
+                <lightning-icon icon-name="utility:connected_apps" alternative-text="conflit" size="xx-small" title="xx-small size"></lightning-icon>
+            </template>
+            <br/>
+            <em>{title2}</em>
+        </p>
     </div>
 </template>

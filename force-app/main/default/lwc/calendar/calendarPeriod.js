@@ -1,6 +1,9 @@
-import { getWeek, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber, sameDay } from "./calendarDateFunctions";
+import { getWeek, getFirstDayOfYear, getLastDayOfYear, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfWeek, 
+    getLastDayOfWeek, getWeekNumber, sameDay } from "./calendarDateFunctions";
+import { populateWithWeekendDay, populateWithHighlightedDay, populateWithSavedDuration, getDayWrapper } 
+    from "./calendarDay";
 
-export class CalendarPopulator {
+export class CalendarPeriod {
 
     // incoming
     periodOption;
@@ -26,7 +29,7 @@ export class CalendarPopulator {
 
     populate() {
         this.populateFirstLast();
-        this.populateWeeks();
+        this.populateWeekList();
         this.populateWithWeekendDays();
         this.populateWithHighlightedDays();
         this.populateWithSavedDurations();
@@ -39,15 +42,22 @@ export class CalendarPopulator {
             this.firstDayDisplayed = getFirstDayOfWeek(this.firstDayOfPeriod);
             this.lastDayOfPeriod = getLastDayOfMonth(this.date);
             this.lastDayDisplayed = getLastDayOfWeek(this.lastDayOfPeriod);
-        } else {
+        } else if(this.periodOption === 'week') {
             this.firstDayOfPeriod = getFirstDayOfWeek(this.date);
             this.firstDayDisplayed = this.firstDayOfPeriod;
             this.lastDayOfPeriod = getLastDayOfWeek(this.date);
             this.lastDayDisplayed = this.lastDayOfPeriod;
+        } else if(this.periodOption === 'year') {
+            this.firstDayOfPeriod = getFirstDayOfYear(this.date);
+            this.firstDayDisplayed = this.firstDayOfPeriod;
+            this.lastDayOfPeriod = getLastDayOfYear(this.date);
+            this.lastDayDisplayed = this.lastDayOfPeriod;
+        } else {
+            throw new Error('Unsupported period option: ' + this.periodOption);
         }
     }
 
-    populateWeeks() {
+    populateWeekList() {
         
         let day = this.firstDayDisplayed;
         const weeks = [];
@@ -67,13 +77,8 @@ export class CalendarPopulator {
     populateWithWeekendDays() {
         this.weeks.forEach((week) => {
             week.days.forEach((day) => {
-                const weekday = day.day.getDay();
-                if (weekday === 6 || weekday === 0) {
-                    day.isWeekend = true;
-                    const isOutsidePeriod = this.isOutsidePeriod(day.day);
-                    if(!isOutsidePeriod) {
-                        day.classes = 'isWeekend';
-                    }
+                if(!this.isOutsidePeriod(day.day)) {
+                    populateWithWeekendDay(day);
                 }
             });
         });
@@ -82,16 +87,8 @@ export class CalendarPopulator {
     populateWithHighlightedDays() {
         this.weeks.forEach((week) => {
             week.days.forEach((day) => {
-                if (
-                    this.highlightedDays.find((highlightedDay) =>
-                        sameDay(highlightedDay, day.day)
-                    )
-                ) {
-                    day.isHighlightedDay = true;
-                    if(!day.isOutsidePeriod) {
-                        day.classes = 'isHighlightedDay';
-                    }
-                }
+                const isOutsidePeriod = this.isOutsidePeriod(day.day);
+                populateWithHighlightedDay(day, this.highlightedDays, isOutsidePeriod);
             });
         });
     }
@@ -99,21 +96,7 @@ export class CalendarPopulator {
     populateWithSavedDurations() {
         this.weeks.forEach((week) => {
             week.days.forEach((day) => {
-                // TODO: we don't support durations that span into the next day for now
-                const savedDateTimes = this.durations.filter((duration) =>
-                    sameDay(duration.fromDateTime, day.day)
-                );
-                if (savedDateTimes) {
-                    day.dateTimes = savedDateTimes;
-                    // savedDateTimes.forEach(savedDateTime => {
-                    //     day.fromDateTime = savedDateTime.fromDateTime;
-                    //     day.toDateTime = savedDateTime.toDateTime;
-                    //     day.title = savedDateTime.title;
-                    //     day.type = savedDateTime.type;
-                    // });
-                } else {
-                    day.dateTimes = [];
-                }
+                populateWithSavedDuration(day, this.durations);
             });
         });
     }
@@ -124,7 +107,10 @@ export class CalendarPopulator {
     
     getWeekWrapper(someDates, indexWeek) {
         const weekNumber = getWeekNumber(someDates[0]);
-        someDates = someDates.map((d, indexDay) => this.getDayWrapper(d, indexDay));
+        someDates = someDates.map((d, indexDay) => {
+            const isOutsidePeriod = this.isOutsidePeriod(d);
+            return getDayWrapper(d, indexDay, isOutsidePeriod);
+        });
         return {
             days: someDates,
             index: indexWeek,
@@ -132,21 +118,7 @@ export class CalendarPopulator {
         };
     }
 
-    getDayWrapper(someDate, index) {
-        const isOutsidePeriod = this.isOutsidePeriod(someDate);
-        return {
-            day: someDate,
-            index: index,
-            isOutsidePeriod: isOutsidePeriod,
-            isHighlightedDay: false,
-            isWeekend: false,
-            classes: isOutsidePeriod ? 'isOutsidePeriod' : 'isWorkingDay',
-            quantity: 0,
-            title: null,
-            title2: null
-        };
-    }
-
+    // we only show outside days in month view
     isOutsidePeriod(someDate) {
         return (this.periodOption === 'month' 
             && (someDate < this.firstDayOfPeriod || someDate > this.lastDayOfPeriod));

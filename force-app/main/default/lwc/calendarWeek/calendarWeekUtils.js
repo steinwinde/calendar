@@ -8,3 +8,14 @@ export const getTimeMarkersForDay = () => {
     }
     return hours;
 }
+
+// if the week has parts of all 3 types, return 3; if 2, return 2; else return 1
+export const getTypes = (days) => {
+    const types = new Set();
+    days.forEach(day => {
+        day.dateTimes.forEach(dt => {
+            types.add(dt.type);
+        });
+    });
+    return types;
+}

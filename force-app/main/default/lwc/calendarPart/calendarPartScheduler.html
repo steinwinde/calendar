@@ -5,10 +5,12 @@
         style={styleDiv}
         >
         <lightning-button 
-            class="slds-m-top_small"
+            disabled={schedulerButtonDisabled}
             label={title} 
             onclick={handleClick} 
+            stretch={schedulerButtonStretch}
             title={title} 
+            variant={schedulerButtonVariant}
         >
         </lightning-button>
     </div>

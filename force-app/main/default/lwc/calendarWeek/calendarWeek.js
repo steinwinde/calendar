@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { getTimeMarkersForDay } from './calendarWeekUtils';
+import { getTimeMarkersForDay, getTypes } from './calendarWeekUtils';
 
 export default class CalendarWeek extends LightningElement {
 
@@ -8,6 +8,10 @@ export default class CalendarWeek extends LightningElement {
 
     @api
     week;
+    
+    get dataId() {
+        return this.week.number + '-' + this.configuration.period;
+    }
     
     get weekNumber() {
         return this.week.number;
@@ -29,8 +33,14 @@ export default class CalendarWeek extends LightningElement {
         return this.configuration.period === 'week';
     }
 
+    get isDay() {
+        return this.configuration.period === 'day';
+    }
+
     get leftColumn() {
-        return ((this.configuration.leftColumnMonth && this.isMonth) || (this.configuration.leftColumnWeek && this.isWeek));
+        return ((this.configuration.leftColumnMonth && this.isMonth) 
+            || (this.configuration.leftColumnWeek && this.isWeek)
+            || (this.configuration.leftColumnDay && this.isDay));
     }
 
     get hours() {

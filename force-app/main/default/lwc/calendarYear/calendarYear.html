@@ -2,19 +2,20 @@
     <ul class="year"><!-- three rows -->
         <template for:each={monthsBlocks} for:item="monthsBlock">
             <li key={monthsBlock.id}>
-                <ul class="months-block" style=""><!-- four months -->
+                <ul class="months-block"><!-- four months -->
                     <template for:each={monthsBlock.months} for:item="month">
                         <li key={month.id}>
                             <h3>{month.label}</h3>
-                            <ul>
+                            <ul class="month">
                                 <template for:each={month.weeks} for:item="week">
-                                    <li key={week.id} style="">
+                                    <li key={week.id}>
                                         <ul class="week">
                                             <template for:each={week.days} for:item="day">
                                                 <li key={day.id}>
                                                     <c-calendar-year-day
                                                         day={day}
                                                         ondayclick={handleDayClick}
+                                                        onpartclick={handlePartClick}
                                                     ></c-calendar-year-day>
                                                 </li>
                                             </template><!-- day  -->

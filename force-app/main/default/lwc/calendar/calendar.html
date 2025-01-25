@@ -71,9 +71,24 @@
                 <c-calendar-year
                     calendar-data={calendarData}
                     ondayclick={handleDayClick}
+                    onpartclick={handlePartClick}
                     date={date}
                 ></c-calendar-year>
             </template>
+                <template lwc:elseif={isDay}>
+                    <div lwc:ref="scrollarea">
+                        <c-calendar-day
+                            class={day.classes} 
+                            configuration={configuration}
+                            day={day} 
+                            ondayclick={handleDayClick}
+                            onpartclick={handlePartClick}
+                            onpartdoubleclick={handlePartDoubleClick}
+                            onpartshiftclick={handlePartShiftClick}
+                            style={day.style}
+                        ></c-calendar-day>
+                    </div>
+                </template>
             <template lwc:else>
                 <div class={classWeekDayRow}>
                     <!-- upper left corner -->

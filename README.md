@@ -25,7 +25,7 @@ This LWC provides many of the features of [Salesforce's calendar](https://help.s
 
 ## Known Issues
 
-- Inconsistent language output: Sometimes the language of texts depends on the current user (week day names), sometimes constants that are set in Javascript
+- Inconsistent language output: Sometimes the language of texts depends on the current user (week day names), sometimes constants that are set in Javascript (make use of https://stackoverflow.com/questions/70542229/is-it-possible-to-translate-words-day-week-month-year-with-pure-js-in)
 - A good solution for the case where not all events fit into a day: In case the calendar is configured to have a given height of a day cell, from a certain point on events might appear cut or fall out of the view
 
 ## Project Structure

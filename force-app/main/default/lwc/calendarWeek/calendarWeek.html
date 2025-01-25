@@ -1,5 +1,7 @@
 <template>
 
+    <div style="display:none; max-height: 0;" data-id={dataId}></div>
+
     <!-- first column: either week number or minute-hour scale -->
     <!-- the margin top is the margin between weekday names and the days (white space) -->
     <div lwc:if={leftColumn} style="margin-top: 0.3rem;">
@@ -12,7 +14,7 @@
             <div style="height: 0.4rem;"></div>
             <div>
                 <template for:each={hours} for:item="hour">
-                    <div key={hour.index} style="position: relative; text-align: right;" class="timer">
+                    <div key={hour.index} style="position: relative; text-align: right; height: 16px;" class="timer">
                         <span class="slds-p-horizontal_small">{hour.hour}</span>
                     </div>
                 </template>
@@ -32,6 +34,7 @@
             onpartclick={handlePartClick}
             onpartdoubleclick={handlePartDoubleClick}
             onpartshiftclick={handlePartShiftClick}
+            style={day.style}
         >
         </c-calendar-day>
     </template>

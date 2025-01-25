@@ -7,7 +7,7 @@ const getHoursWorked = (fromDateTime, toDateTime) => {
     return hoursWorked;
 }
 
-const getHeight = (configuration, fromDateTime, toDateTime) => {
+const getHeight = (fromDateTime, toDateTime) => {
     // if(configuration.period === 'month') {
     //     return 1.3;
     // }
@@ -21,9 +21,9 @@ const getHeight = (configuration, fromDateTime, toDateTime) => {
     return workload;
 }
 
-const getTimeStamp = (someDateTime) => {
-    return (someDateTime.getHours()>9?someDateTime.getHours():'0'+someDateTime.getHours()) 
-            + ':' + (someDateTime.getMinutes()>9?someDateTime.getMinutes():'0'+someDateTime.getMinutes());
-}
+// const getTimeStamp = (someDateTime) => {
+//     return (someDateTime.getHours()>9?someDateTime.getHours():'0'+someDateTime.getHours()) 
+//             + ':' + (someDateTime.getMinutes()>9?someDateTime.getMinutes():'0'+someDateTime.getMinutes());
+// }
 
-export { getHeight, getTimeStamp };
+export { getHeight };
