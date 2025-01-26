@@ -76,7 +76,7 @@
                 ></c-calendar-year>
             </template>
                 <template lwc:elseif={isDay}>
-                    <div lwc:ref="scrollarea">
+                    <div class={classCalendarRows} lwc:ref="scrollarea">
                         <c-calendar-day
                             class={day.classes} 
                             configuration={configuration}

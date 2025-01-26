@@ -38,6 +38,8 @@ export default class EventCalendar extends LightningElement {
     @api
     heightFixedWeek = false;
     @api
+    heightFixedDay = false;
+    @api
     startHour = 9;
     @api
     scheduler = false;
@@ -68,6 +70,7 @@ export default class EventCalendar extends LightningElement {
             partHeightFixedWeek: this.partHeightFixedWeek,
             heightFixedMonth: this.heightFixedMonth,
             heightFixedWeek: this.heightFixedWeek,
+            heightFixedDay: this.heightFixedDay,
             scheduler: this.scheduler
         };
     

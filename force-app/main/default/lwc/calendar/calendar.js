@@ -39,7 +39,8 @@ export default class Calendar extends LightningElement {
         partHeightFixedMonth: false,
         partHeightFixedWeek: false,
         heightFixedMonth: false,
-        heightFixedWeek: false
+        heightFixedWeek: false,
+        heightFixedDay: false
     };
     durations = [];
     date = new Date();
@@ -136,10 +137,10 @@ export default class Calendar extends LightningElement {
     }
 
     get classCalendarRows() {
-        // TODO: Compare this method with calendar currently in use, consider isWeek more
+        // TODO: Compare this method with calendar currently in use
         if(this.isMonth) return 'calendar-rows-month';
-        if(this.configuration?.stackedWeek) {
-            if(this.configuration?.heightFixedWeek) {
+        if(this.configuration?.stackedWeek || this.configuration?.stackedDay) {
+            if(this.configuration?.heightFixedWeek || this.configuration?.heightFixedDay) {
                 return 'calendar-rows-week-stacked-fixed-height';
             }
             return 'calendar-rows-week-stacked';

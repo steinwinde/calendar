@@ -54,6 +54,10 @@
                 description="Is the height of the calendar in a weekly view fixed?"
                 required="false"
             />
+            <property default="false" name="heightFixedDay" type="Boolean" label="Fixed height of day calendar?" 
+                description="Is the height of the calendar in a day view fixed?"
+                required="false"
+            />
 
             <property default="9" name="startHour" type="Integer" label="Default start time of an item"
                 description="When does a new or moved event start per default (0-23)?"
