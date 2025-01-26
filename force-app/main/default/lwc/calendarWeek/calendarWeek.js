@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { getTimeMarkersForDay, getTypes } from './calendarWeekUtils';
+import { getTimeMarkersForDay} from './calendarWeekUtils';
 
 export default class CalendarWeek extends LightningElement {
 
@@ -10,7 +10,7 @@ export default class CalendarWeek extends LightningElement {
     week;
     
     get dataId() {
-        return this.week.number + '-' + this.configuration.period;
+        return this.week.number + '-' + this.configuration?.period;
     }
     
     get weekNumber() {
@@ -22,25 +22,26 @@ export default class CalendarWeek extends LightningElement {
     }
 
     // get classPeriod() {
-    //     return 'first-column-' + this.configuration.period;
+    //     return 'first-column-' + this.configuration?.period;
     // }
 
     get isMonth() {
-        return this.configuration.period === 'month';
+        return this.configuration?.period === 'month';
     }
 
     get isWeek() {
-        return this.configuration.period === 'week';
+        return this.configuration?.period === 'week';
     }
 
     get isDay() {
-        return this.configuration.period === 'day';
+        return this.configuration?.period === 'day';
     }
 
     get leftColumn() {
-        return ((this.configuration.leftColumnMonth && this.isMonth) 
-            || (this.configuration.leftColumnWeek && this.isWeek)
-            || (this.configuration.leftColumnDay && this.isDay));
+        return ((this.configuration?.leftColumnMonth && this.isMonth) 
+            || (this.configuration?.leftColumnWeek && this.isWeek)
+            // || (this.configuration?.leftColumnDay && this.isDay)
+        );
     }
 
     get hours() {

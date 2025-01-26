@@ -5,12 +5,10 @@
     <!-- first column: either week number or minute-hour scale -->
     <!-- the margin top is the margin between weekday names and the days (white space) -->
     <div lwc:if={leftColumn} style="margin-top: 0.3rem;">
-        <!-- removed  class={classPeriod} -->
         <div lwc:if={isMonth}>
             <span style="font-size: 1.2rem;">{weekNumber}</span>
         </div>
-        <!-- removed  class={classPeriod} -->
-        <div lwc:if={isWeek}>
+        <div lwc:else>
             <div style="height: 0.4rem;"></div>
             <div>
                 <template for:each={hours} for:item="hour">

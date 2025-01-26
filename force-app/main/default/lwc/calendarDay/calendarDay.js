@@ -1,6 +1,9 @@
 import { LightningElement, api } from 'lwc';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 
+const DEFAULT_HEIGHT_HOUR = 4.0125;
+const DEFAULT_HEIGHT_DAY = 96.3;
+const DEFAULT_HEIGHT_MONTH_DAY = 9.6;
 
 export default class CalendarDay extends LightningElement {
 
@@ -57,66 +60,56 @@ export default class CalendarDay extends LightningElement {
     get classContainer() {
         // TODO: To make this precisely configurable, we wait until we have a flexible concept of 
         // a configuration in JSON format
-        if(!this.isMobile && ((this.isWeek && this.configuration?.leftColumnWeek) 
-                || (this.isDay && this.configuration?.leftColumnDay))) {
+        if(!this.isMobile 
+            && (
+                (this.isWeek && this.configuration?.leftColumnWeek) 
+                // || (this.isDay && this.configuration?.leftColumnDay)
+            )
+        ) {
             return 'show-lines';
         }
         return 'container';
     }
 
-
-    // get styleContainer() {
-    //     // TODO: All this is very different from what we currently use
-    //     let heightStyle = '';
-    //     if(this.isWeek && (this.configuration?.leftColumnWeek || !this.configuration?.stackedWeek)) {
-    //         // decides the height of the background e.g. of a weekend day; 
-    //         heightStyle = 'height: 96.3rem;';
-    //     } else {
-    //         const hasFixedHeight = (this.isMonth && this.configuration?.heightFixedMonth === true)
-    //             || (this.isWeek && this.configuration?.heightFixedWeek === true);
-    //         heightStyle = hasFixedHeight ? 'height: 9.6rem;' : 'min-height: 9.6rem;';
-    //     }
-
-    //     // when calendar height is fixed and stacking used (and if there are many parts), overflow-hidden guarantees 
-    //     // parts don't reach outside the day
-    //     const hasFixedHeight = (this.isMonth && this.configuration?.heightFixedMonth === true)
-    //         // || (this.isWeek && this.configuration?.heightFixedWeek === true && this.configuration?.stackedWeek === true)
-    //         ;
-    //     const overflowStyle = hasFixedHeight ? 'overflow: hidden;' : '';
-
-    //     return heightStyle + ' ' + overflowStyle;
-    // }
-
-    // 32.1rem is the height for a day from 00:00 to 08:00
     get styleContainer() {
         let heightStyle = '';
         // when calendar height is fixed and stacking used (and if there are many parts), overflow-hidden guarantees 
         // parts don't reach outside the day
         let overflowStyle = '';
         if(this.isDay) {
-            if(this.configuration?.leftColumnDay || !this.configuration?.stackedDay) {
+            // if(this.configuration?.leftColumnDay || !this.configuration?.stackedDay) {
                 if(this.configuration?.heightFixedDay === true) {
                     overflowStyle = 'overflow: hidden;';
-                    heightStyle = 'height: 96.3rem;';
+                    heightStyle = `height: ${DEFAULT_HEIGHT_DAY}rem;`;
                 } else {
-                    heightStyle = 'min-height: 96.3rem;';
+                    // if the height is not fixed, the user a) doesn't want to see elements outside, but b) wants to see all elements;
+                    // i.e. overflow is (by default) visible and the height adjusts (either automatically (stacked) or not)
+                    if(!this.configuration?.stackedDay) {
+                        const height = this.getLatestHour(this.parts) * DEFAULT_HEIGHT_HOUR;
+                        heightStyle = `min-height: ${height}rem;`;
+                    }
                 }
-            }
+            // }
         } else if(this.isWeek) {
-            if(this.configuration?.leftColumnWeek || !this.configuration?.stackedWeek) {
+            // if(this.configuration?.leftColumnWeek || !this.configuration?.stackedWeek) {
                 if(this.configuration?.heightFixedWeek === true) {
                     overflowStyle = 'overflow: hidden;';
-                    heightStyle = 'height: 96.3rem;';
+                    heightStyle = `height: ${DEFAULT_HEIGHT_DAY}rem;`;
                 } else {
-                    heightStyle = 'min-height: 96.3rem;';
+                    // if the height is not fixed, the user a) doesn't want to see elements outside, but b) wants to see all elements;
+                    // i.e. overflow is (by default) visible and the height adjusts (either automatically (stacked) or not)
+                    if(!this.configuration?.stackedWeek) {
+                        const height = this.getLatestHour(this.parts) * DEFAULT_HEIGHT_HOUR;
+                        heightStyle = `min-height: ${height}rem;`;
+                    }
                 }
-            }
+            // }
         } else if(this.isMonth) {
             if(this.configuration?.heightFixedMonth === true) {
                 overflowStyle = 'overflow: hidden;';
-                heightStyle = 'height: 9.6rem;';
+                heightStyle = `height: ${DEFAULT_HEIGHT_MONTH_DAY}rem;`;
             } else {
-                heightStyle = 'min-height: 9.6rem;';
+                heightStyle = `min-height: ${DEFAULT_HEIGHT_MONTH_DAY}rem;`;
             }
         }
 
@@ -215,5 +208,13 @@ export default class CalendarDay extends LightningElement {
             type: dt.type,
             width: dt.width
         }
+    }
+
+    getLatestHour(parts) {
+        const START_HOUR = 8;
+        let latestHour = parts.length === 0 ? START_HOUR : parts
+            .reduce((acc, curr) => curr.toDateTime.getHours() > acc.toDateTime.getHours() ? curr : acc)
+            .toDateTime.getHours();
+        return latestHour;
     }
 }

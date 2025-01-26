@@ -23,8 +23,8 @@ export default class EventCalendar extends LightningElement {
     leftColumnMonth = false;
     @api 
     leftColumnWeek = false;
-    @api
-    leftColumnDay = false;
+    // @api
+    // leftColumnDay = false;
     @api
     stackedWeek = false;
     @api
@@ -33,6 +33,8 @@ export default class EventCalendar extends LightningElement {
     partHeightFixedMonth = false;
     @api
     partHeightFixedWeek = false;
+    @api
+    partHeightFixedDay = false;
     @api
     heightFixedMonth = false;
     @api
@@ -63,11 +65,12 @@ export default class EventCalendar extends LightningElement {
             readOnly: this.isReadOnly,
             leftColumnMonth: this.leftColumnMonth,
             leftColumnWeek: this.leftColumnWeek,
-            leftColumnDay: this.leftColumnDay,
+            // leftColumnDay: this.leftColumnDay,
             stackedWeek: this.stackedWeek,
             stackedDay: this.stackedDay,
             partHeightFixedMonth: this.partHeightFixedMonth,
             partHeightFixedWeek: this.partHeightFixedWeek,
+            partHeightFixedDay: this.partHeightFixedDay,
             heightFixedMonth: this.heightFixedMonth,
             heightFixedWeek: this.heightFixedWeek,
             heightFixedDay: this.heightFixedDay,

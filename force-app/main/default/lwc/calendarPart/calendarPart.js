@@ -83,7 +83,8 @@ export default class CalendarPart extends LightningElement {
 
     get hasFixedHeight() {
         return (this.configuration?.period === 'month' && this.configuration?.partHeightFixedMonth === true)
-            || (this.configuration?.period === 'week' && this.configuration?.partHeightFixedWeek === true);
+            || (this.configuration?.period === 'week' && this.configuration?.partHeightFixedWeek === true)
+            || (this.configuration?.period === 'day' && this.configuration?.partHeightFixedDay === true);
     }
 
     get classDivMain() {
@@ -133,15 +134,7 @@ export default class CalendarPart extends LightningElement {
         return result;
     }
 
-    // get styleDivP() {
-        // if(this.configuration?.period === 'month' && this.configuration?.partHeightFixedMonth === true) {
-        //     return 'height: 3rem; text-overflow: ellipsis;';
-        // } else if(this.configuration?.period === 'week' && this.configuration?.partHeightFixedWeek === true) {
-        //     return 'height: 3rem; text-overflow: ellipsis;';
-        // }
-        // return '';
-
-        // three==done; four==ongoing; one==startable
+    // e.g. three==done; four==ongoing; one==startable
     get schedulerButtonVariant() {
         return (this.type === 'four' || this.type === 'two') ? 'brand' : (this.type === 'three' ? 'success' : 'neutrale');
     }

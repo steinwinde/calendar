@@ -34,10 +34,11 @@ export default class Calendar extends LightningElement {
         readOnly: false,
         leftColumnMonth: false,
         leftColumnWeek: false,
-        leftColumnDay: false,
+        // leftColumnDay: false,
         stackedWeek: false,
         partHeightFixedMonth: false,
         partHeightFixedWeek: false,
+        partHeightFixedDay: false,
         heightFixedMonth: false,
         heightFixedWeek: false,
         heightFixedDay: false
@@ -123,9 +124,9 @@ export default class Calendar extends LightningElement {
 
     get leftColumn() {
         const result = this.isDesktop 
-            && ((this.configuration.leftColumnMonth && this.isMonth) 
-                || (this.configuration.leftColumnWeek && this.isWeek)
-                || (this.configuration.leftColumnDay && this.isDay)
+            && ((this.configuration?.leftColumnMonth && this.isMonth) 
+                || (this.configuration?.leftColumnWeek && this.isWeek)
+                // || (this.configuration?.leftColumnDay && this.isDay)
             );
         return result;
     }
@@ -151,7 +152,7 @@ export default class Calendar extends LightningElement {
     get classScrolledArea() {
         const result = ((this.isMonth && this.configuration?.leftColumnMonth) 
             || (this.isWeek && this.configuration?.leftColumnWeek)
-            || (this.isDay && this.configuration?.leftColumnDay)
+            // || (this.isDay && this.configuration?.leftColumnDay)
         ) 
             ? 'days-and-left-column' : 'days-only';
         return result;
