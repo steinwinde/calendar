@@ -10,12 +10,33 @@ const getWeek = (someDate) => {
     return week;
 }
 
+const getFirstDayOfYear = (someDate) => {
+    const firstDate = new Date(
+        someDate.getFullYear(),
+        0,
+        1
+    );
+    firstDate.setHours(0, 0, 0, 0);
+    return firstDate;
+}
+
+const getLastDayOfYear = (someDate) => {
+    const lastDate = new Date(
+        someDate.getFullYear(),
+        11,
+        31
+    );
+    lastDate.setHours(23, 59, 59, 999);
+    return lastDate;
+}
+
 const getFirstDayOfMonth = (someDate) => {
     const firstDate = new Date(
         someDate.getFullYear(),
         someDate.getMonth(),
         1
     );
+    firstDate.setHours(0, 0, 0, 0);
     return firstDate;
 }
 
@@ -25,21 +46,24 @@ const getLastDayOfMonth = (someDate) => {
         someDate.getMonth() + 1,
         0
     );
+    lastDate.setHours(23, 59, 59, 999);
     return lastDate;
 }
 
 const getFirstDayOfWeek = (someDate) => {
     let delta = someDate.getDay() - (firstDayOfWeek-1);
     if(delta < 0) delta += 7;
-    const result = new Date(someDate.getTime());
-    result.setDate(result.getDate() - delta);
-    return result;
+    const firstDate = new Date(someDate.getTime());
+    firstDate.setDate(firstDate.getDate() - delta);
+    firstDate.setHours(0, 0, 0, 0);
+    return firstDate;
 }
 
 const getLastDayOfWeek = (someDate) => {
-    let result = getFirstDayOfWeek(someDate);
-    result.setDate(result.getDate() + 6);
-    return result;
+    let lastDate = getFirstDayOfWeek(someDate);
+    lastDate.setDate(lastDate.getDate() + 6);
+    lastDate.setHours(23, 59, 59, 999);
+    return lastDate;
 }
 
 const getWeekNumber = (someDate) => {
@@ -64,4 +88,4 @@ const sameDay = (d1, d2) => {
     );
 }
 
-export { getWeek, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber, sameDay };
+export { getWeek, getFirstDayOfYear, getLastDayOfYear, getFirstDayOfMonth, getLastDayOfMonth, getFirstDayOfWeek, getLastDayOfWeek, getWeekNumber, sameDay };

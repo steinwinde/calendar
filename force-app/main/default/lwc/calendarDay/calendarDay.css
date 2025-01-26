@@ -2,6 +2,14 @@
     justify-content:start;
     margin-top: 0.3rem;
 }
+@media screen and (max-width: 1000px) {
+    :host {
+        /* border-width: 1px;
+        border-color: purple;
+        border-style: solid; */
+        background-color: #f9f9f9;
+    }
+}
 /* :host(.isWorkingDay) {
     background-color: white;
 } */
@@ -32,4 +40,11 @@
     text-align: right;
     font-size: 0.6668rem;
     padding-right: 0.5rem;
+}
+
+.background-day-counter-mobile {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
 }

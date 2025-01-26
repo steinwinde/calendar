@@ -10,7 +10,7 @@ div.main {
     width: 90%;
 }
 
-div.stackedWeek {
+div.stackedWeek, div.stackedDay {
     position: relative;
 }
 

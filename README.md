@@ -12,20 +12,22 @@ This LWC provides many of the features of [Salesforce's calendar](https://help.s
 
 ## On the Roadmap
 
-- Mobile devices
+- Better rendering on mobile devices
+- Configuration in order to display an hour or minutes scale for day view (like it already exists for week view)
+- JSON configuration instead of list of attributes to enable conditional properties like "if mobile, show scheduler, else normal view"
 - Removal of specific week days from view (e.g. remove Saturday and Sunday)
+- Background events e.g. to indicate holidays that stretch across several days
 - A second mini-calendar for independent date choices and quick navigation
 - Explicit support of being inserted in the sidebar
 - Event types that behave (e.g. read-only vs. read-write) differently from each other
-- Day view
 - Wrapper that allows the selection of an SObject as input like Salesforce's calendar
-- Visual indicator for today's date
+- Visual indication for today's date
 - [Tooltips](https://www.lightningdesignsystem.com/components/tooltips/)
 - [Other Salesforce calendars](https://help.salesforce.com/s/articleView?id=service.pfs_view_calendar.htm&type=5) could be emulated
 
 ## Known Issues
 
-- Inconsistent language output: Sometimes the language of texts depends on the current user (week day names), sometimes constants that are set in Javascript
+- Inconsistent language output: Sometimes the language of texts depends on the current user (week day names), sometimes constants that are set in Javascript (make use of https://stackoverflow.com/questions/70542229/is-it-possible-to-translate-words-day-week-month-year-with-pure-js-in)
 - A good solution for the case where not all events fit into a day: In case the calendar is configured to have a given height of a day cell, from a certain point on events might appear cut or fall out of the view
 
 ## Project Structure

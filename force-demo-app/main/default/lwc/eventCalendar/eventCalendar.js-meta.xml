@@ -25,8 +25,16 @@
                 description="Display the times on the left of the week view along with scale lines?" 
                 required="false"
             />
+            <!-- <property default="false" name="leftColumnDay" type="Boolean" label="Display left column of a day with a scale?" 
+                description="Display the times on the left of the day view along with scale lines?" 
+                required="false"
+            /> -->
             <property default="false" name="stackedWeek" type="Boolean" label="Stacking for order and size of week items?" 
                 description="Use a simplified positioning for week items as in a stack?"
+                required="false"
+            />
+            <property default="false" name="stackedDay" type="Boolean" label="Stacking for order and size of day items?" 
+                description="Use a simplified positioning for day items as in a stack?"
                 required="false"
             />
             <property default="false" name="partHeightFixedMonth" type="Boolean" label="Fixed height of monthly items?" 
@@ -38,12 +46,20 @@
                 description="Is the height of the items in a weekly, stacked view fixed or does it depend on the text?"
                 required="false"
             />
+            <property default="false" name="partHeightFixedDay" type="Boolean" label="Fixed height of daily items?" 
+                description="Is the height of the items in a daily, stacked view fixed or does it depend on the text?"
+                required="false"
+            />
             <property default="false" name="heightFixedMonth" type="Boolean" label="Fixed height of monthly calendar?" 
                 description="Is the height of the calendar in a monthly view fixed?"
                 required="false"
             />
             <property default="false" name="heightFixedWeek" type="Boolean" label="Fixed height of weekly calendar?" 
                 description="Is the height of the calendar in a weekly view fixed?"
+                required="false"
+            />
+            <property default="false" name="heightFixedDay" type="Boolean" label="Fixed height of day calendar?" 
+                description="Is the height of the calendar in a day view fixed?"
                 required="false"
             />
 

@@ -1,8 +1,8 @@
 <template>
     <template lwc:if={day.highlight}>
-        <a href="javascript:void();" class={classA} onclick={handleClick} data-value={day.id}>{day.label}</a>
+        <a href="javascript:void();" class={classA} onclick={handlePartClick} data-value={day.id}>{day.label}</a>
     </template>
     <template lwc:else>
-        <span>{day.label}</span>
+        <span onclick={handleDayClick}>{day.label}</span>
     </template>
 </template>

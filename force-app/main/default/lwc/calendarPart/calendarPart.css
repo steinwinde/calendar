@@ -5,7 +5,7 @@ div.main {
     display: block;
     opacity: 1;
     color: black;
-    border: 1px solid white;
+    border: 1px solid grey;
     border-radius: 5px;
     width: 90%;
 }
@@ -26,7 +26,11 @@ div.four {
     background-color: pink;
 }
 
-div.stackedWeek {
+div.five {
+    background-color: #53bed6;
+}
+
+div.stackedWeek, div.stackedDay {
     position: relative;
 }
 

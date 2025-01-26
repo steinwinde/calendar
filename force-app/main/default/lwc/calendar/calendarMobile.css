@@ -2,6 +2,10 @@
     background-color: #f3f3f3;
 }
 
+.container {
+    min-height: 30rem;
+}
+
 .week-day-row {
     display: grid;
     column-gap: 0.2rem;
@@ -22,10 +26,6 @@
 }
 .calendar-rows-week-stacked {
     overflow-y: auto;
-}
-/* TODO: is this used in a good way? */
-.calendar-rows-week-stacked-fixed-height {
-    overflow-y: scroll;
 }
 .calendar-rows-week-not-stacked {
     height: 33.41rem;

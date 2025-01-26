@@ -23,16 +23,24 @@ export default class EventCalendar extends LightningElement {
     leftColumnMonth = false;
     @api 
     leftColumnWeek = false;
+    // @api
+    // leftColumnDay = false;
     @api
     stackedWeek = false;
+    @api
+    stackedDay = false;
     @api
     partHeightFixedMonth = false;
     @api
     partHeightFixedWeek = false;
     @api
+    partHeightFixedDay = false;
+    @api
     heightFixedMonth = false;
     @api
     heightFixedWeek = false;
+    @api
+    heightFixedDay = false;
     @api
     startHour = 9;
     @api
@@ -57,17 +65,107 @@ export default class EventCalendar extends LightningElement {
             readOnly: this.isReadOnly,
             leftColumnMonth: this.leftColumnMonth,
             leftColumnWeek: this.leftColumnWeek,
+            // leftColumnDay: this.leftColumnDay,
             stackedWeek: this.stackedWeek,
+            stackedDay: this.stackedDay,
             partHeightFixedMonth: this.partHeightFixedMonth,
             partHeightFixedWeek: this.partHeightFixedWeek,
+            partHeightFixedDay: this.partHeightFixedDay,
             heightFixedMonth: this.heightFixedMonth,
             heightFixedWeek: this.heightFixedWeek,
+            heightFixedDay: this.heightFixedDay,
             scheduler: this.scheduler
         };
     
         this.populatePublicHolidays();
         this.refreshCalendar();
     }
+
+    // ------------------------------------------------------------------------
+    // User changes something in the calendar, i.e. event comes from child component
+    // ------------------------------------------------------------------------
+
+    async handlePeriodChange(event) {
+        this.configuration.period = event.detail;
+    }
+
+    // Event coming from calendar, the month or the week changes
+    handleDateChange(event) {
+        this.currentDate = event.detail;
+        this.populatePublicHolidays();
+        
+        // this.calendarData.date = event.detail;
+        // this.calendarData.highlightedDays = [...this.publicHolidays];
+        // delete this.calendarData.configuration;
+        // this.calendarData = {...this.calendarData};
+
+        this.calendarData = Object.assign({...this.calendarData}, 
+            {configuration: undefined, date: event.detail, highlightedDays: [...this.publicHolidays]});
+    }
+
+    async handleNewPart(event) {
+        const d = new Date().toISOString().substring(0, 10);
+        const result = await EventCalendarChangeDateModal.open({
+            description: 'Change date of part',
+            index: null,
+            d: d,
+            size: 'small'
+        });
+        if(result) {
+            const day= new Date(result);
+            // delete this.calendarData.configuration;
+            this.calendarData = createPart(day, this.calendarData, this.startHour);
+        }
+    }
+
+    async handleDayClick(event) {
+        if(this.configuration.period === 'year') {
+            this.configuration.period = 'day';
+            this.currentDate = event.detail;
+            this.refreshCalendar();
+            return;
+        }
+
+        this.calendarData = createPart(event.detail, this.calendarData, this.startHour);
+    }
+
+    // Event coming from calendarWeek, one or several "parts" are dragged to a day
+    handleDrop(event) {
+        const ids = event.detail.ids;
+        const day = event.detail.day;
+        this.calendarData = movePartsToDate(ids, day, this.calendarData, this.startHour);
+    }
+
+    // Event coming from calendarWeek, a "Part" is clicked; we could open a modal here to edit the "Part"
+    async handlePartClick(event) {
+        const durationToChange = this.calendarData.durations.find((duration) => duration.id === event.detail.id);
+        const d = durationToChange.fromDateTime.toISOString().substring(0, 10);
+        const result = await EventCalendarChangeDateModal.open({
+            description: 'Change date of part',
+            index: event.detail.id,
+            d: d,
+            size: 'small'
+        });
+        if(result) {
+            const day= new Date(result);
+            this.calendarData = movePartsToDate(event.detail.id, day, this.calendarData, this.startHour);
+        }
+    }
+
+    async handlePartDoubleClick(event) {
+        const result = await LightningConfirm.open({
+            message: this.LABEL_DO_YOU_WANT_TO_DELETE,
+            variant: 'header',
+            label: this.LABEL_DO_YOU_WANT_TO_DELETE_HEADER,
+        });
+        if(result === true) {
+            this.calendarData = deletePart(event.detail, this.calendarData);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // general functions
+    // ------------------------------------------------------------------------
 
     async refreshCalendar() {
         try {
@@ -108,82 +206,8 @@ export default class EventCalendar extends LightningElement {
     async populatePublicHolidays() {
         const year = this.currentDate.getFullYear();
         const result = await getPublicHolidays({ year: year });
-        this.publicHolidays = result.map((d) => new Date(d));
+        this.publicHolidays = result.map((d) => {return {date: new Date(d), type: 'Two'}});
     }
 
-    // ------------------------------------------------------------------------
-    // User changes something in the calendar, i.e. event comes from child component
-    // ------------------------------------------------------------------------
 
-    // Event coming from calendar, calendar becomes based on months instead of weeks or vice versa
-    async handlePeriodChange(event) {
-        console.log('period changed: ', event.detail);
-    }
-
-    // Event coming from calendar, the month or the week changes
-    handleDateChange(event) {
-        this.currentDate = event.detail;
-        this.populatePublicHolidays();
-        
-        // this.calendarData.date = event.detail;
-        // this.calendarData.highlightedDays = [...this.publicHolidays];
-        // delete this.calendarData.configuration;
-        // this.calendarData = {...this.calendarData};
-
-        this.calendarData = Object.assign({...this.calendarData}, 
-            {configuration: undefined, date: event.detail, highlightedDays: [...this.publicHolidays]});
-    }
-
-    async handleNewPart(event) {
-        const d = new Date().toISOString().substring(0, 10);
-        const result = await EventCalendarChangeDateModal.open({
-            description: 'Change date of part',
-            index: null,
-            d: d,
-            size: 'small'
-        });
-        if(result) {
-            const day= new Date(result);
-            // delete this.calendarData.configuration;
-            this.calendarData = createPart(day, this.calendarData, this.startHour);
-        }
-    }
-
-    async handleDayClick(event) {
-        this.calendarData = createPart(event.detail, this.calendarData, this.startHour);
-    }
-
-    // Event coming from calendarWeek, one or several "parts" are dragged to a day
-    handleDrop(event) {
-        const ids = event.detail.ids;
-        const day = event.detail.day;
-        this.calendarData = movePartsToDate(ids, day, this.calendarData, this.startHour);
-    }
-
-    // Event coming from calendarWeek, a "Part" is clicked; we could open a modal here to edit the "Part"
-    async handlePartClick(event) {
-        const durationToChange = this.calendarData.durations.find((duration) => duration.id === event.detail.id);
-        const d = durationToChange.fromDateTime.toISOString().substring(0, 10);
-        const result = await EventCalendarChangeDateModal.open({
-            description: 'Change date of part',
-            index: event.detail.id,
-            d: d,
-            size: 'small'
-        });
-        if(result) {
-            const day= new Date(result);
-            this.calendarData = movePartsToDate(event.detail.id, day, this.calendarData, this.startHour);
-        }
-    }
-
-    async handlePartDoubleClick(event) {
-        const result = await LightningConfirm.open({
-            message: this.LABEL_DO_YOU_WANT_TO_DELETE,
-            variant: 'header',
-            label: this.LABEL_DO_YOU_WANT_TO_DELETE_HEADER,
-        });
-        if(result === true) {
-            this.calendarData = deletePart(event.detail, this.calendarData);
-        }
-    }
 }

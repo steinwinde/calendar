@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 
 export default class CalendarYearDay extends LightningElement {
+
+    // day e.g. {"label":"4","id":"2025-4-4"}
     @api
     day;
 
@@ -22,8 +24,13 @@ export default class CalendarYearDay extends LightningElement {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    handleClick(event) {
-        const e = new CustomEvent('dayclick', {detail: this.day.id});
+    handleDayClick(event) {
+        const e = new CustomEvent('dayclick', {detail: new Date(this.day.id)});
+        this.dispatchEvent(e);
+    }
+
+    handlePartClick(event) {
+        const e = new CustomEvent('partclick', {detail: new Date(this.day.id)});
         this.dispatchEvent(e);
     }
 }
