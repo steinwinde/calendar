@@ -27,10 +27,6 @@
 .calendar-rows-week-stacked {
     overflow-y: auto;
 }
-/* TODO: Does this make sense for mobile? */
-.calendar-rows-week-stacked-fixed-height {
-    overflow-y: scroll;
-}
 .calendar-rows-week-not-stacked {
     height: 33.41rem;
     overflow-y: scroll;

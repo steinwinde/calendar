@@ -1,5 +1,16 @@
 <template>
-    <div lwc:ref="container">
+    <div ontouchend={handleTouchEnd} ontouchstart={handleTouchStart} lwc:ref="container" class="container">
+        <div class="slds-grid">
+            <div class="slds-col_bump-right"><h1 class="slds-page-header__title">{title}</h1></div>
+            <div>
+                <lightning-button-icon icon-name="utility:dayview" variant="container" alternative-text={LABEL_DAY} title={LABEL_DAY}
+                    onclick={handleChangePeriod} value="day"></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:weeklyview" variant="container" alternative-text={LABEL_WEEK} title={LABEL_WEEK}
+                    onclick={handleChangePeriod} value="week"></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:monthlyview" variant="container" alternative-text={LABEL_MONTH} title={LABEL_MONTH}
+                    onclick={handleChangePeriod} value="month"></lightning-button-icon>
+            </div>
+        </div>
         <template lwc:if={isYear}>
             <c-calendar-year
                 calendar-data={calendarData}
@@ -8,16 +19,30 @@
             ></c-calendar-year>
         </template>
         <template lwc:else>
+            <template lwc:if={showWeekDays}>
             <div class={classWeekDayRow}>
-                <!-- upper left corner -->
-                <div lwc:if={leftColumn}>&nbsp;</div>
-                <!-- names of weekdays -->
                 <template if:true={weekdays} for:each={weekdays} for:item="weekday">
                     <div key={weekday.index} class="top-row-element">
-                        {weekday.name}<template if:true={isWeek}>&nbsp;<!-- TODO: show day in month --></template>
+                            {weekday.name}
                     </div>
                 </template>
             </div>
+            </template>
+            <template lwc:if={isDay}>
+                <div class={classCalendarRows} lwc:ref="scrollarea">
+                    <c-calendar-day
+                        class={day.classes} 
+                        configuration={configuration}
+                        day={day} 
+                        ondayclick={handleDayClick}
+                        onpartclick={handlePartClick}
+                        onpartdoubleclick={handlePartDoubleClick}
+                        onpartshiftclick={handlePartShiftClick}
+                        style={day.style}
+                    ></c-calendar-day>
+                </div>
+            </template>
+            <template lwc:else>
             <div class={classCalendarRows} lwc:ref="scrollarea">
                 <template for:each={weeks} for:item="week">
                     <c-calendar-week
@@ -33,6 +58,7 @@
                     ></c-calendar-week>
                 </template>
             </div>
+        </template>
         </template>
     </div>
 </template>

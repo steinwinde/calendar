@@ -455,9 +455,9 @@ export default class Calendar extends LightningElement {
     }
 
     populateTitle() {
-        if(this.configuration.period === 'day') {
+        if(this.configuration?.period === 'day') {
             this.title = this.date.toLocaleDateString();
-        } else if(this.configuration.period === 'week') {
+        } else if(this.configuration?.period === 'week') {
             if(this.isDesktop) {
                 const firstDayOfWeek = getFirstDayOfWeek(this.date).toLocaleDateString();
                 const lastDayOfWeek = getLastDayOfWeek(this.date).toLocaleDateString();
@@ -465,11 +465,11 @@ export default class Calendar extends LightningElement {
             } else {
                 this.title = this.LABEL_WEEK + ' ' + getWeekNumber(this.date) + '/' + this.date.getFullYear();
             }
-        } else if(this.configuration.period === 'month') {
+        } else if(this.configuration?.period === 'month') {
             const month = this.date.toLocaleString('default', { month: 'long' });
             const year = this.date.getFullYear();
             this.title = month + ' ' + year;
-        } else if(this.configuration.period === 'year') {
+        } else if(this.configuration?.period === 'year') {
             this.title = this.date.getFullYear();
         } else {
             // unsupported
